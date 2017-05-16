@@ -108,17 +108,20 @@ namespace lazy_steam_server
 
         private static void SendCodeToSteamWindow(string code)
         {
-            var processes = Process.GetProcessesByName("steam");//change it!
+            code = " " + code;
+            var processes = Process.GetProcessesByName("steam");
             var proc = processes[0];
             var handle = proc.MainWindowHandle;
             SetForegroundWindow(handle);
             SendKeys.SendWait(code);
+            if(UiChanger.checkBox2.Checked)
             SendKeys.Send("~");
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-           //SendCodeToSteamWindow("X26YW");
+           SendCodeToSteamWindow(steamTextBox.Text);
+            SetText("From textbox "+ steamTextBox.Text);
         }
 
         private static void ShowBaloonTip(string text)
@@ -134,6 +137,8 @@ namespace lazy_steam_server
             string text = "Username: " + o[1] + "\n code:" + o[0];
             SetText(text);
             ShowBaloonTip(text);
+            if(UiChanger.checkBox1.Checked)
+            SendCodeToSteamWindow(o[0]);
         }
     }
 }

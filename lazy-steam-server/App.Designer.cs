@@ -39,6 +39,8 @@ namespace lazy_steam_server
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.steamTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnUdpStart
@@ -106,12 +108,34 @@ namespace lazy_steam_server
             this.label1.TabIndex = 5;
             this.label1.Text = "You can enter\r\nSteam code below:";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(366, 281);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(108, 17);
+            this.checkBox1.TabIndex = 6;
+            this.checkBox1.Text = "Trigger scrapping";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(366, 258);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(82, 17);
+            this.checkBox2.TabIndex = 7;
+            this.checkBox2.Text = "Apply enter ";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(486, 360);
+            this.Controls.Add(this.checkBox2);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.steamTextBox);
             this.Controls.Add(this.button1);
@@ -135,5 +159,7 @@ namespace lazy_steam_server
         private NotifyIcon notifyIcon1;
         private TextBox steamTextBox;
         private Label label1;
+        private CheckBox checkBox1;
+        private CheckBox checkBox2;
     }
 }

@@ -12,7 +12,6 @@ namespace lazy_steam_server
     class UdpServer
     {
         private static UdpClient _udpServer;
-
         public static void StartUdp()
         {
             try
