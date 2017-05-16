@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace lazy_steam_server
 {
-    public partial class Form1 : Form
+    public partial class App : Form
     {
-        public Form1()
+        public App()
         {
             InitializeComponent();
         }
