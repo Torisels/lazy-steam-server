@@ -23,15 +23,13 @@ namespace lazy_steam_server
                     App.SetText("Waiting for broadcast...");
                     while (true)
                     {
-                        var remoteEP = new IPEndPoint(IPAddress.Any, 8888);
                         UdpReceiveResult data = await _udpServer.ReceiveAsync();
-                        if (Encoding.UTF8.GetString(data.Buffer) == "CSGO_DASHBOARD_DISCOVERY_REQUEST")
+                        if (Encoding.UTF8.GetString(data.Buffer) == ConnectionCodes.UDP_SERVER_REQUEST)
                         {
                             App.SetText("Broadcast recieved");
-                            string to_send = ConnectionCodes.UDP_SERVER_RESPONSE;
+                            string to_send = ConnectionCodes.UdpResponseCode();
                             byte[] sendingBuffor = Encoding.ASCII.GetBytes(to_send);
                             await _udpServer.SendAsync(sendingBuffor, sendingBuffor.Length, data.RemoteEndPoint);
-                            sendingBuffor = null;
                         }
                     }
                 });

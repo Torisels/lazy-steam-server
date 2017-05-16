@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,16 +21,19 @@ namespace lazy_steam_server
         public static App UiChanger;
         private bool _udpButtonStart;
         private bool _tcpButtonStart;
+        public static int TcpPort = TcpServer.FreeTcpPort();
 
         [DllImport("USER32.DLL")]
         public static extern bool SetForegroundWindow(IntPtr proccess);
 
         public App()
         {
+            Console.WriteLine(TcpPort);
             InitializeComponent();
             UiChanger = this;
             SetText("Ip address is: " + GetLocalIpAddress());
             SetText("Host name is: " + Dns.GetHostName());
+            SetText("Free TCP port is: " + TcpPort);
 //            SetText(ConnectionCodes.Code(ConnectionCodes.UDP_SERVER_REQUEST));
 
         }
@@ -86,7 +90,7 @@ namespace lazy_steam_server
             if (!_tcpButtonStart)
             {
                 SetText("TCP Server starting...");
-                UdpServer.StartUdp();
+                TcpServer.SetupServer();
                 SetText("TCP Server is running.");
                 btnUdpStart.Text = "Stop TCP";
                 _tcpButtonStart = true;
@@ -94,7 +98,7 @@ namespace lazy_steam_server
             else
             {
                 SetText("TCP Server service is terminating...");
-                UdpServer.StopUdp();
+                TcpServer.StopServer();
                 SetText("TCP Server service has been terminated.");
                 btnUdpStart.Text = "Start TCP";
                 _tcpButtonStart = false;
@@ -120,6 +124,16 @@ namespace lazy_steam_server
         private static void ShowBaloonTip(string text)
         {
             UiChanger.notifyIcon1.ShowBalloonTip(1000, "Code recieved!", text, ToolTipIcon.None);
+        }
+
+        public static void OnSteamDataRecieved(object f, EventArgs e)
+        {
+            string[] o = ((IEnumerable)f).Cast<object>()
+                                 .Select(x => x.ToString())
+                                 .ToArray();
+            string text = "Username: " + o[1] + "\n code:" + o[0];
+            SetText(text);
+            ShowBaloonTip(text);
         }
     }
 }
