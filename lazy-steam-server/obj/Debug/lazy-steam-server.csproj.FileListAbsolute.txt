@@ -1,0 +1,11 @@
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\bin\Debug\lazy-steam-server.exe.config
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\bin\Debug\lazy-steam-server.exe
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\bin\Debug\lazy-steam-server.pdb
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Debug\lazy-steam-server.csprojResolveAssemblyReference.cache
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Debug\lazy_steam_server.App.resources
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Debug\lazy_steam_server.Properties.Resources.resources
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Debug\lazy-steam-server.csproj.GenerateResource.Cache
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Debug\lazy-steam-server.exe
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Debug\lazy-steam-server.pdb
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\bin\Debug\Newtonsoft.Json.xml
