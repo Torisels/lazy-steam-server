@@ -1,0 +1,10 @@
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\bin\Release\lazy-steam-server.exe.config
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\bin\Release\lazy-steam-server.exe
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\bin\Release\lazy-steam-server.pdb
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\bin\Release\Newtonsoft.Json.dll
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\bin\Release\Newtonsoft.Json.xml
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Release\lazy_steam_server.App.resources
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Release\lazy_steam_server.Properties.Resources.resources
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Release\lazy-steam-server.csproj.GenerateResource.Cache
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Release\lazy-steam-server.exe
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Release\lazy-steam-server.pdb

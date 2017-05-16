@@ -108,7 +108,7 @@ namespace lazy_steam_server
 
         private static void SendCodeToSteamWindow(string code)
         {
-            var processes = Process.GetProcessesByName("notepad");//change it!
+            var processes = Process.GetProcessesByName("steam");//change it!
             var proc = processes[0];
             var handle = proc.MainWindowHandle;
             SetForegroundWindow(handle);
@@ -118,7 +118,7 @@ namespace lazy_steam_server
 
         private void button1_Click(object sender, EventArgs e)
         {
-           
+           //SendCodeToSteamWindow("X26YW");
         }
 
         private static void ShowBaloonTip(string text)

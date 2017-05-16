@@ -27,9 +27,10 @@ namespace lazy_steam_server
                         if (Encoding.UTF8.GetString(data.Buffer) == ConnectionCodes.UDP_SERVER_REQUEST)
                         {
                             App.SetText("Broadcast recieved");
-                            string to_send = ConnectionCodes.UdpResponseCode();
-                            byte[] sendingBuffor = Encoding.ASCII.GetBytes(to_send);
+                            string toSend = ConnectionCodes.UdpResponseCode();
+                            byte[] sendingBuffor = Encoding.ASCII.GetBytes(toSend);
                             await _udpServer.SendAsync(sendingBuffor, sendingBuffor.Length, data.RemoteEndPoint);
+                            Console.WriteLine(toSend);
                         }
                     }
                 });
