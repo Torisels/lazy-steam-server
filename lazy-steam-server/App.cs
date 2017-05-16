@@ -100,16 +100,26 @@ namespace lazy_steam_server
                 _tcpButtonStart = false;
             }
         }
-        private void button1_Click(object sender, EventArgs e)
+
+
+        private static void SendCodeToSteamWindow(string code)
         {
-            
-            var processes = Process.GetProcessesByName("notepad");
+            var processes = Process.GetProcessesByName("notepad");//change it!
             var proc = processes[0];
             var handle = proc.MainWindowHandle;
             SetForegroundWindow(handle);
-            SendKeys.SendWait("ENTER");
+            SendKeys.SendWait(code);
             SendKeys.Send("~");
-            SendKeys.SendWait("^v");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private static void ShowBaloonTip(string text)
+        {
+            UiChanger.notifyIcon1.ShowBalloonTip(1000, "Code recieved!", text, ToolTipIcon.None);
         }
     }
 }

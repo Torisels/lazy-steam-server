@@ -28,7 +28,7 @@ namespace lazy_steam_server
                         if (Encoding.UTF8.GetString(data.Buffer) == "CSGO_DASHBOARD_DISCOVERY_REQUEST")
                         {
                             App.SetText("Broadcast recieved");
-                            string to_send = ConnectionCodes.Code(ConnectionCodes.UDP_SERVER_RESPONSE);
+                            string to_send = ConnectionCodes.UDP_SERVER_RESPONSE;
                             byte[] sendingBuffor = Encoding.ASCII.GetBytes(to_send);
                             await _udpServer.SendAsync(sendingBuffor, sendingBuffor.Length, data.RemoteEndPoint);
                             sendingBuffor = null;
