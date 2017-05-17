@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
@@ -110,7 +105,7 @@ namespace lazy_steam_server
 
         private static  void SendCodeToSteamWindow(string code)
         {
-            Task.Run(async() =>
+            Task.Run(async () =>
             {
                 code = " " + code;
                 var processes = Process.GetProcessesByName("steam");
@@ -121,9 +116,9 @@ namespace lazy_steam_server
                     SetForegroundWindow(handle);
                     SendKeys.SendWait("^{BKSP}");
                     SendKeys.SendWait(code);
-                    await Task.Delay(2);
+                    await Task.Delay(10);
                     if (UiChanger.checkBox2.Checked)
-                        SendKeys.Send("~");
+                    SendKeys.SendWait("~");
                 }
             });
         }
@@ -132,7 +127,7 @@ namespace lazy_steam_server
         {
             SendCodeToSteamWindow(steamTextBox.Text);
            // SetText("From textbox "+ steamTextBox.Text);
-            string text = "User code " + steamTextBox.Text + " to login into " + "Janusz";
+            string text = "Use code " + steamTextBox.Text + " to login into " + "Janusz";
             ShowBaloonTip(text);
         }
 
@@ -147,7 +142,7 @@ namespace lazy_steam_server
             string[] o = ((IEnumerable)f).Cast<object>()
                                  .Select(x => x.ToString())
                                  .ToArray();
-            string text = "User code " + o[0] + " to login into " + o[1];
+            string text = "Use code " + o[0] + " to login into " + o[1];
             SetText(text);
             ShowBaloonTip(text);
             await Task.Delay(1000);
