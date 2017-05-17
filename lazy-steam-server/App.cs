@@ -34,6 +34,8 @@ namespace lazy_steam_server
             SetText("Ip address is: " + GetLocalIpAddress());
             SetText("Host name is: " + Dns.GetHostName());
             SetText("Free TCP port is: " + TcpPort);
+            checkBox2.Checked = Properties.Settings.Default.apply_enter;
+            checkBox1.Checked = Properties.Settings.Default.trigger_scrapping;
 //            SetText(ConnectionCodes.Code(ConnectionCodes.UDP_SERVER_REQUEST));
 
         }
@@ -106,9 +108,9 @@ namespace lazy_steam_server
         }
 
 
-        private static void SendCodeToSteamWindow(string code)
+        private static  void SendCodeToSteamWindow(string code)
         {
-            Task.Run(async () =>
+            Task.Run(async() =>
             {
                 code = " " + code;
                 var processes = Process.GetProcessesByName("steam");
@@ -117,6 +119,7 @@ namespace lazy_steam_server
                     var proc = processes[0];
                     var handle = proc.MainWindowHandle;
                     SetForegroundWindow(handle);
+                    SendKeys.SendWait("^{BKSP}");
                     SendKeys.SendWait(code);
                     await Task.Delay(2);
                     if (UiChanger.checkBox2.Checked)
@@ -128,13 +131,15 @@ namespace lazy_steam_server
         private void button1_Click(object sender, EventArgs e)
         {
             SendCodeToSteamWindow(steamTextBox.Text);
-            SetText("From textbox "+ steamTextBox.Text);
-           // ShowBaloonTip("text");
+           // SetText("From textbox "+ steamTextBox.Text);
+            string text = "User code: " + steamTextBox.Text + "\nto login into: " + "Janusz";
+            ShowBaloonTip(text);
         }
 
         private static void ShowBaloonTip(string text)
-        {
-            UiChanger.notifyIcon1.ShowBalloonTip(1000, "Code recieved!", text, ToolTipIcon.None);
+        { 
+            int duration = CheckIfSteamIsRunning() ? Properties.Settings.Default.steam_exists : Properties.Settings.Default.steam_not_exists;
+            UiChanger.notifyIcon1.ShowBalloonTip(duration, "Code recieved!", text, ToolTipIcon.None);
         }
 
         public static async void   OnSteamDataRecieved(object f, EventArgs e)
@@ -148,6 +153,30 @@ namespace lazy_steam_server
             await Task.Delay(1000);
             if(UiChanger.checkBox1.Checked)
             SendCodeToSteamWindow(o[0]);
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SettingsMenu frm = new SettingsMenu {StartPosition = FormStartPosition.CenterParent};
+            frm.Show();
+        }
+
+        private static bool CheckIfSteamIsRunning()
+        {
+            var processes = Process.GetProcessesByName("steam");
+            return processes.Length != 0;
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.apply_enter = checkBox2.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.trigger_scrapping = checkBox1.Checked;
+            Properties.Settings.Default.Save();
         }
     }
 }

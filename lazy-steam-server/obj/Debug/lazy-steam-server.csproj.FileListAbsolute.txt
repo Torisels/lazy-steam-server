@@ -9,3 +9,4 @@ C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Debug\lazy-
 C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Debug\lazy-steam-server.pdb
 C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Debug\lazy_steam_server.SettingsMenu.resources

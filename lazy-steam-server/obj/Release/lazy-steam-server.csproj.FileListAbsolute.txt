@@ -8,3 +8,4 @@ C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Release\laz
 C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Release\lazy-steam-server.csproj.GenerateResource.Cache
 C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Release\lazy-steam-server.exe
 C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Release\lazy-steam-server.pdb
+C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Release\lazy-steam-server.csprojResolveAssemblyReference.cache

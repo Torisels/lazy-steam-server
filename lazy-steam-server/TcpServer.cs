@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 
 namespace lazy_steam_server
 {
@@ -106,6 +102,7 @@ namespace lazy_steam_server
             Array.Clear(receivebuffer, 0, receivebuffer.Length);
             string recstring = Encoding.ASCII.GetString(databuffer);
             Array.Clear(databuffer, 0, databuffer.Length);
+            // ReSharper disable once LocalizableElement
             Console.WriteLine("Message received: " + recstring);
             App.SetText("Message received: " + recstring);
             return recstring;
