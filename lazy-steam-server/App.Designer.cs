@@ -37,10 +37,6 @@ namespace lazy_steam_server
             this.textBoxLog = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.steamTextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,7 +46,7 @@ namespace lazy_steam_server
             // btnUdpStart
             // 
             this.btnUdpStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnUdpStart.Location = new System.Drawing.Point(12, 325);
+            this.btnUdpStart.Location = new System.Drawing.Point(12, 238);
             this.btnUdpStart.Name = "btnUdpStart";
             this.btnUdpStart.Size = new System.Drawing.Size(75, 23);
             this.btnUdpStart.TabIndex = 0;
@@ -61,7 +57,7 @@ namespace lazy_steam_server
             // btnTcpStart
             // 
             this.btnTcpStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTcpStart.Location = new System.Drawing.Point(387, 327);
+            this.btnTcpStart.Location = new System.Drawing.Point(217, 238);
             this.btnTcpStart.Name = "btnTcpStart";
             this.btnTcpStart.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnTcpStart.Size = new System.Drawing.Size(83, 23);
@@ -76,14 +72,14 @@ namespace lazy_steam_server
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxLog.Location = new System.Drawing.Point(12, 27);
             this.textBoxLog.Name = "textBoxLog";
-            this.textBoxLog.Size = new System.Drawing.Size(458, 204);
+            this.textBoxLog.Size = new System.Drawing.Size(288, 204);
             this.textBoxLog.TabIndex = 2;
             this.textBoxLog.Text = "";
             // 
             // button1
             // 
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.button1.Location = new System.Drawing.Point(204, 327);
+            this.button1.Location = new System.Drawing.Point(115, 238);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 3;
@@ -97,50 +93,13 @@ namespace lazy_steam_server
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             // 
-            // steamTextBox
-            // 
-            this.steamTextBox.Location = new System.Drawing.Point(16, 278);
-            this.steamTextBox.Name = "steamTextBox";
-            this.steamTextBox.Size = new System.Drawing.Size(100, 20);
-            this.steamTextBox.TabIndex = 4;
-            // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(13, 238);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(99, 27);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "You can enter\r\nSteam code below:";
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(366, 281);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(108, 17);
-            this.checkBox1.TabIndex = 6;
-            this.checkBox1.Text = "Trigger scrapping";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(366, 258);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(82, 17);
-            this.checkBox2.TabIndex = 7;
-            this.checkBox2.Text = "Apply enter ";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(486, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(316, 24);
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -155,7 +114,7 @@ namespace lazy_steam_server
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
@@ -164,11 +123,7 @@ namespace lazy_steam_server
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
-            this.ClientSize = new System.Drawing.Size(486, 360);
-            this.Controls.Add(this.checkBox2);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.steamTextBox);
+            this.ClientSize = new System.Drawing.Size(316, 271);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBoxLog);
             this.Controls.Add(this.btnTcpStart);
@@ -191,10 +146,6 @@ namespace lazy_steam_server
         private RichTextBox textBoxLog;
         private Button button1;
         private NotifyIcon notifyIcon1;
-        private TextBox steamTextBox;
-        private Label label1;
-        private CheckBox checkBox1;
-        private CheckBox checkBox2;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem settingsToolStripMenuItem;

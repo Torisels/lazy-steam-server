@@ -18,6 +18,8 @@ namespace lazy_steam_server
             InitializeComponent();
             textBoxSteamRunning.Text = Properties.Settings.Default.steam_exists.ToString();
             textBoxSteamNotRunning.Text = Properties.Settings.Default.steam_not_exists.ToString();
+            checkBoxAutoPasteToSteam.Checked = Properties.Settings.Default.trigger_scrapping;
+            checkBoxRunAtStartUp.Checked = Properties.Settings.Default.run_at_startup;
         }
 
         private void btnSaveSettings_Click(object sender, EventArgs e)
@@ -34,9 +36,8 @@ namespace lazy_steam_server
             }
             else
             {
-                MessageBox.Show("These values must be integers", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Duration time values must be integers", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-          
         }
 
         private void textBoxSteamNotRunning_KeyUp(object sender, KeyEventArgs e)
@@ -58,6 +59,18 @@ namespace lazy_steam_server
             {
                 e.Handled = true;
             }
+        }
+
+        private void checkBoxAutoPasteToSteam_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.trigger_scrapping = checkBoxAutoPasteToSteam.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void checkBoxRunAtStartUp_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.run_at_startup = checkBoxRunAtStartUp.Checked;
+            Properties.Settings.Default.Save();
         }
     }
 }

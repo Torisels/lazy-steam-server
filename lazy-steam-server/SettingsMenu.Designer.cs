@@ -33,6 +33,8 @@
             this.textBoxSteamRunning = new System.Windows.Forms.TextBox();
             this.textBoxSteamNotRunning = new System.Windows.Forms.TextBox();
             this.btnSaveSettings = new System.Windows.Forms.Button();
+            this.checkBoxAutoPasteToSteam = new System.Windows.Forms.CheckBox();
+            this.checkBoxRunAtStartUp = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -74,7 +76,8 @@
             // 
             // btnSaveSettings
             // 
-            this.btnSaveSettings.Location = new System.Drawing.Point(133, 89);
+            this.btnSaveSettings.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.btnSaveSettings.Location = new System.Drawing.Point(133, 127);
             this.btnSaveSettings.Name = "btnSaveSettings";
             this.btnSaveSettings.Size = new System.Drawing.Size(75, 23);
             this.btnSaveSettings.TabIndex = 4;
@@ -82,11 +85,35 @@
             this.btnSaveSettings.UseVisualStyleBackColor = true;
             this.btnSaveSettings.Click += new System.EventHandler(this.btnSaveSettings_Click);
             // 
+            // checkBoxAutoPasteToSteam
+            // 
+            this.checkBoxAutoPasteToSteam.AutoSize = true;
+            this.checkBoxAutoPasteToSteam.Location = new System.Drawing.Point(16, 73);
+            this.checkBoxAutoPasteToSteam.Name = "checkBoxAutoPasteToSteam";
+            this.checkBoxAutoPasteToSteam.Size = new System.Drawing.Size(120, 17);
+            this.checkBoxAutoPasteToSteam.TabIndex = 5;
+            this.checkBoxAutoPasteToSteam.Text = "Auto-paste to steam";
+            this.checkBoxAutoPasteToSteam.UseVisualStyleBackColor = true;
+            this.checkBoxAutoPasteToSteam.CheckedChanged += new System.EventHandler(this.checkBoxAutoPasteToSteam_CheckedChanged);
+            // 
+            // checkBoxRunAtStartUp
+            // 
+            this.checkBoxRunAtStartUp.AutoSize = true;
+            this.checkBoxRunAtStartUp.Location = new System.Drawing.Point(16, 96);
+            this.checkBoxRunAtStartUp.Name = "checkBoxRunAtStartUp";
+            this.checkBoxRunAtStartUp.Size = new System.Drawing.Size(93, 17);
+            this.checkBoxRunAtStartUp.TabIndex = 6;
+            this.checkBoxRunAtStartUp.Text = "Run at startup";
+            this.checkBoxRunAtStartUp.UseVisualStyleBackColor = true;
+            this.checkBoxRunAtStartUp.CheckedChanged += new System.EventHandler(this.checkBoxRunAtStartUp_CheckedChanged);
+            // 
             // SettingsMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(334, 124);
+            this.ClientSize = new System.Drawing.Size(334, 162);
+            this.Controls.Add(this.checkBoxRunAtStartUp);
+            this.Controls.Add(this.checkBoxAutoPasteToSteam);
             this.Controls.Add(this.btnSaveSettings);
             this.Controls.Add(this.textBoxSteamNotRunning);
             this.Controls.Add(this.textBoxSteamRunning);
@@ -108,5 +135,7 @@
         private System.Windows.Forms.TextBox textBoxSteamRunning;
         private System.Windows.Forms.TextBox textBoxSteamNotRunning;
         private System.Windows.Forms.Button btnSaveSettings;
+        private System.Windows.Forms.CheckBox checkBoxAutoPasteToSteam;
+        private System.Windows.Forms.CheckBox checkBoxRunAtStartUp;
     }
 }

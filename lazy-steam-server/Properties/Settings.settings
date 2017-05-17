@@ -8,10 +8,10 @@
     <Setting Name="steam_not_exists" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">7500</Value>
     </Setting>
-    <Setting Name="apply_enter" Type="System.Boolean" Scope="User">
+    <Setting Name="trigger_scrapping" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="trigger_scrapping" Type="System.Boolean" Scope="User">
+    <Setting Name="run_at_startup" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
