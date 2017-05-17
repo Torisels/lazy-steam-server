@@ -144,7 +144,7 @@ namespace lazy_steam_server
             this.Controls.Add(this.btnUdpStart);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "App";
-            this.Text = "App";
+            this.Text = "Lazy steam server";
             this.ResumeLayout(false);
             this.PerformLayout();
 

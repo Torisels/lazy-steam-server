@@ -92,7 +92,7 @@ namespace lazy_steam_server
                 SetText("TCP Server starting...");
                 TcpServer.SetupServer();
                 SetText("TCP Server is running.");
-                btnUdpStart.Text = "Stop TCP";
+                btnTcpStart.Text = "Stop TCP";
                 _tcpButtonStart = true;
             }
             else
@@ -100,7 +100,7 @@ namespace lazy_steam_server
                 SetText("TCP Server service is terminating...");
                 TcpServer.StopServer();
                 SetText("TCP Server service has been terminated.");
-                btnUdpStart.Text = "Start TCP";
+                btnTcpStart.Text = "Start TCP";
                 _tcpButtonStart = false;
             }
         }
@@ -108,20 +108,28 @@ namespace lazy_steam_server
 
         private static void SendCodeToSteamWindow(string code)
         {
-            code = " " + code;
-            var processes = Process.GetProcessesByName("steam");
-            var proc = processes[0];
-            var handle = proc.MainWindowHandle;
-            SetForegroundWindow(handle);
-            SendKeys.SendWait(code);
-            if(UiChanger.checkBox2.Checked)
-            SendKeys.Send("~");
+            Task.Run(async () =>
+            {
+                code = " " + code;
+                var processes = Process.GetProcessesByName("steam");
+                if (processes.Length != 0)
+                {
+                    var proc = processes[0];
+                    var handle = proc.MainWindowHandle;
+                    SetForegroundWindow(handle);
+                    SendKeys.SendWait(code);
+                    await Task.Delay(2);
+                    if (UiChanger.checkBox2.Checked)
+                        SendKeys.Send("~");
+                }
+            });
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-           SendCodeToSteamWindow(steamTextBox.Text);
+            SendCodeToSteamWindow(steamTextBox.Text);
             SetText("From textbox "+ steamTextBox.Text);
+           // ShowBaloonTip("text");
         }
 
         private static void ShowBaloonTip(string text)
@@ -129,14 +137,15 @@ namespace lazy_steam_server
             UiChanger.notifyIcon1.ShowBalloonTip(1000, "Code recieved!", text, ToolTipIcon.None);
         }
 
-        public static void OnSteamDataRecieved(object f, EventArgs e)
+        public static async void   OnSteamDataRecieved(object f, EventArgs e)
         {
             string[] o = ((IEnumerable)f).Cast<object>()
                                  .Select(x => x.ToString())
                                  .ToArray();
-            string text = "Username: " + o[1] + "\n code:" + o[0];
+            string text = "User code: " + o[0] + "\nto login into: " + o[1];
             SetText(text);
             ShowBaloonTip(text);
+            await Task.Delay(1000);
             if(UiChanger.checkBox1.Checked)
             SendCodeToSteamWindow(o[0]);
         }

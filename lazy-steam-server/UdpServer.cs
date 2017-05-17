@@ -41,7 +41,6 @@ namespace lazy_steam_server
         }
         public static void StopUdp()
         {
-            App.SetText("Udp listening is terminated");
             try
             {
                 _udpServer?.Close();

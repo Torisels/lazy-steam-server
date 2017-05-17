@@ -17,6 +17,7 @@ namespace lazy_steam_server
         private static readonly List<Socket> ClientSockets = new List<Socket>();
         public static int Port;
         public static event EventHandler<EventArgs> DataRecieved;
+
         public static int FreeTcpPort()
         {
             TcpListener l = new TcpListener(IPAddress.Loopback, 0);
@@ -31,10 +32,9 @@ namespace lazy_steam_server
         {
             try
             {
-                App.SetText("The open port is: " + Port);
-                ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Unspecified);
+                ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 ServerSocket.Bind(new IPEndPoint(IPAddress.Any, Port));
-                ServerSocket.Listen(0);
+                ServerSocket.Listen(5);
                 ServerSocket.BeginAccept(AcceptCallback, null);
                 DataRecieved += App.OnSteamDataRecieved;
             }
@@ -86,16 +86,14 @@ namespace lazy_steam_server
             if (com == ConnectionCodes.TCP_SERVER_REQUEST)
             {
                 SendMessageFromString(ConnectionCodes.Code(ConnectionCodes.TCP_SERVER_RESPONSE), socket);
-            }
-            else if (com == ConnectionCodes.TCP_SERVER_DATA)
-            {
-                var strings = ConnectionCodes.CodeAndNameFromRecievedString(text);
-                var steamCode = strings[(int) ConnectionCodes.RecievedInfo.Code];
-                var steamUserName = strings[(int) ConnectionCodes.RecievedInfo.UserName];
-                SendMessageFromString(ConnectionCodes.Code(ConnectionCodes.TCP_SERVER_REQUEST_RESPONSE), socket);
-                App.SetText("Code from steam is: " + steamCode);
-                App.SetText("Username from steam is: " + steamUserName);
-                OnDataRecieved(strings);
+                string text1 = RecieveToString(socket);
+                string com1 = ConnectionCodes.GetComFromJson(text1);
+                if (com1 == ConnectionCodes.TCP_SERVER_DATA)
+                {
+                    var strings = ConnectionCodes.CodeAndNameFromRecievedString(text1);
+                    SendMessageFromString(ConnectionCodes.Code(ConnectionCodes.TCP_SERVER_REQUEST_RESPONSE), socket);
+                    OnDataRecieved(strings);
+                }
             }
         }
 
@@ -109,6 +107,7 @@ namespace lazy_steam_server
             string recstring = Encoding.ASCII.GetString(databuffer);
             Array.Clear(databuffer, 0, databuffer.Length);
             Console.WriteLine("Message received: " + recstring);
+            App.SetText("Message received: " + recstring);
             return recstring;
         }
 
@@ -119,6 +118,7 @@ namespace lazy_steam_server
                 var sendingbyte = Encoding.ASCII.GetBytes(s);
                 sock.Send(sendingbyte);
                 Console.WriteLine("Message: " + s + " has been sent successfully");
+                App.SetText("Message: " + s + " has been sent successfully");
                 Array.Clear(sendingbyte, 0, sendingbyte.Length);
             }
             catch (SocketException ex)
@@ -131,5 +131,5 @@ namespace lazy_steam_server
         {
             DataRecieved?.Invoke(strings, EventArgs.Empty);
         }
-}
+    }
 }
