@@ -132,7 +132,7 @@ namespace lazy_steam_server
         {
             SendCodeToSteamWindow(steamTextBox.Text);
            // SetText("From textbox "+ steamTextBox.Text);
-            string text = "User code: " + steamTextBox.Text + "\nto login into: " + "Janusz";
+            string text = "User code " + steamTextBox.Text + " to login into " + "Janusz";
             ShowBaloonTip(text);
         }
 
@@ -147,7 +147,7 @@ namespace lazy_steam_server
             string[] o = ((IEnumerable)f).Cast<object>()
                                  .Select(x => x.ToString())
                                  .ToArray();
-            string text = "User code: " + o[0] + "\nto login into: " + o[1];
+            string text = "User code " + o[0] + " to login into " + o[1];
             SetText(text);
             ShowBaloonTip(text);
             await Task.Delay(1000);
