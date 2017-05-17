@@ -32,6 +32,8 @@ namespace lazy_steam_server
             SetText("Host name is: " + Dns.GetHostName());
             SetText("Free TCP port is: " + TcpPort);
             SetStartup();
+            if(Properties.Settings.Default.run_at_startup)
+                ShowBallonTipOnStartUp("Lazy steam server is running.");
         }
         public static void SetText(string text)
         {
@@ -133,6 +135,7 @@ namespace lazy_steam_server
         { 
             int duration = CheckIfSteamIsRunning() ? Properties.Settings.Default.steam_exists : Properties.Settings.Default.steam_not_exists;
             UiChanger.notifyIcon1.ShowBalloonTip(duration, "Code recieved!", text, ToolTipIcon.None);
+            Properties.Settings.Default.Save();
         }
 
         public static async void OnSteamDataRecieved(object f, EventArgs e)
@@ -160,7 +163,7 @@ namespace lazy_steam_server
             return processes.Length != 0;
         }
 
-        private void SetStartup()
+        public static void SetStartup()
         {
             RegistryKey rk = Registry.CurrentUser.OpenSubKey
                 ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
@@ -170,6 +173,34 @@ namespace lazy_steam_server
             else
                 rk.DeleteValue("lazy-steam-server", false);
 
+        }
+        private void ShowBallonTipOnStartUp(string text)
+        {
+            notifyIcon1.ShowBalloonTip(BallonTipToolStartUpDuration, "App started!", text, ToolTipIcon.None);
+        }
+
+        private void App_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                notifyIcon1.Visible = true;
+                notifyIcon1.ShowBalloonTip(1000, "App minimized!", "Lazy steam helper has been minimized to the tray.", ToolTipIcon.None);
+                Hide();
+                e.Cancel = true;
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+            Environment.Exit(1);
+        }
+
+
+        private void toolStripMenuItemExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+            Environment.Exit(1);
         }
     }
 }

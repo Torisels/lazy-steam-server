@@ -71,6 +71,7 @@ namespace lazy_steam_server
         {
             Properties.Settings.Default.run_at_startup = checkBoxRunAtStartUp.Checked;
             Properties.Settings.Default.Save();
+            App.SetStartup();
         }
     }
 }
