@@ -18,6 +18,7 @@ namespace lazy_steam_server
         public static App UiChanger;
         private bool _udpButtonStart;
         private bool _tcpButtonStart;
+        private bool _logsEnabled;
         public static int TcpPort = TcpServer.FreeTcpPort();
 
         [DllImport("USER32.DLL")]
@@ -70,7 +71,7 @@ namespace lazy_steam_server
                 SetText("Udp Server starting...");
                 UdpServer.StartUdp();
                 SetText("Udp Server is running.");
-                btnUdpStart.Text = "Stop UDP";
+                //btnUdpStart.Text = "Stop UDP";
                 _udpButtonStart = true;
             }
             else
@@ -78,7 +79,7 @@ namespace lazy_steam_server
                 SetText("Udp Server service is terminating...");
                 UdpServer.StopUdp();
                 SetText("Udp Server service has been terminated.");
-                btnUdpStart.Text = "Start UDP";
+                //btnUdpStart.Text = "Start UDP";
                 _udpButtonStart = false;
             }
         }
@@ -90,7 +91,7 @@ namespace lazy_steam_server
                 SetText("TCP Server starting...");
                 TcpServer.SetupServer();
                 SetText("TCP Server is running.");
-                btnTcpStart.Text = "Stop TCP";
+               // btnTcpStart.Text = "Stop TCP";
                 _tcpButtonStart = true;
             }
             else
@@ -98,7 +99,7 @@ namespace lazy_steam_server
                 SetText("TCP Server service is terminating...");
                 TcpServer.StopServer();
                 SetText("TCP Server service has been terminated.");
-                btnTcpStart.Text = "Start TCP";
+              //  btnTcpStart.Text = "Start TCP";
                 _tcpButtonStart = false;
             }
         }
@@ -154,7 +155,7 @@ namespace lazy_steam_server
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SettingsMenu frm = new SettingsMenu {StartPosition = FormStartPosition.CenterParent};
-            frm.Show();
+            frm.ShowDialog(this);
         }
 
         private static bool CheckIfSteamIsRunning()
@@ -201,6 +202,37 @@ namespace lazy_steam_server
         {
             Application.Exit();
             Environment.Exit(1);
+        }
+
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                WindowState = FormWindowState.Normal;
+                Show();
+            }
+            
+        }
+        private void toolStripMenuItemShow_Click(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Normal;
+            Show();
+        }
+
+
+
+        private void logsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (!_logsEnabled)
+            {
+                textBoxLog.Visible = true;
+                _logsEnabled = true;
+            }
+            else
+            {
+                textBoxLog.Visible = false;
+                _logsEnabled = false;
+            }
         }
     }
 }

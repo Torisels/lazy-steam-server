@@ -20,6 +20,7 @@ namespace lazy_steam_server
             textBoxSteamNotRunning.Text = Properties.Settings.Default.steam_not_exists.ToString();
             checkBoxAutoPasteToSteam.Checked = Properties.Settings.Default.trigger_scrapping;
             checkBoxRunAtStartUp.Checked = Properties.Settings.Default.run_at_startup;
+            StartPosition = FormStartPosition.CenterParent;
         }
 
         private void btnSaveSettings_Click(object sender, EventArgs e)

@@ -32,43 +32,20 @@ namespace lazy_steam_server
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(App));
-            this.btnUdpStart = new System.Windows.Forms.Button();
-            this.btnTcpStart = new System.Windows.Forms.Button();
             this.textBoxLog = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItemShow = new System.Windows.Forms.ToolStripMenuItem();
+            this.logsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // btnUdpStart
-            // 
-            this.btnUdpStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnUdpStart.Location = new System.Drawing.Point(12, 238);
-            this.btnUdpStart.Name = "btnUdpStart";
-            this.btnUdpStart.Size = new System.Drawing.Size(75, 23);
-            this.btnUdpStart.TabIndex = 0;
-            this.btnUdpStart.Text = "Start UDP";
-            this.btnUdpStart.UseVisualStyleBackColor = true;
-            this.btnUdpStart.Click += new System.EventHandler(this.btnUdpStart_Click);
-            // 
-            // btnTcpStart
-            // 
-            this.btnTcpStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTcpStart.Location = new System.Drawing.Point(217, 238);
-            this.btnTcpStart.Name = "btnTcpStart";
-            this.btnTcpStart.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnTcpStart.Size = new System.Drawing.Size(83, 23);
-            this.btnTcpStart.TabIndex = 1;
-            this.btnTcpStart.Text = "Start TCP";
-            this.btnTcpStart.UseVisualStyleBackColor = true;
-            this.btnTcpStart.Click += new System.EventHandler(this.btnTcpStart_Click);
             // 
             // textBoxLog
             // 
@@ -76,27 +53,47 @@ namespace lazy_steam_server
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxLog.Location = new System.Drawing.Point(12, 27);
             this.textBoxLog.Name = "textBoxLog";
-            this.textBoxLog.Size = new System.Drawing.Size(288, 204);
+            this.textBoxLog.Size = new System.Drawing.Size(289, 204);
             this.textBoxLog.TabIndex = 2;
             this.textBoxLog.Text = "";
-            // 
-            // button1
-            // 
-            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.button1.Location = new System.Drawing.Point(115, 238);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Send Code";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.textBoxLog.Visible = false;
             // 
             // notifyIcon1
             // 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Text = "Lazy-steam-server";
             this.notifyIcon1.Visible = true;
+            this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemShow,
+            this.logsToolStripMenuItem,
+            this.toolStripMenuItemExit});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 70);
+            // 
+            // toolStripMenuItemShow
+            // 
+            this.toolStripMenuItemShow.Name = "toolStripMenuItemShow";
+            this.toolStripMenuItemShow.Size = new System.Drawing.Size(103, 22);
+            this.toolStripMenuItemShow.Text = "Show";
+            this.toolStripMenuItemShow.Click += new System.EventHandler(this.toolStripMenuItemShow_Click);
+            // 
+            // logsToolStripMenuItem
+            // 
+            this.logsToolStripMenuItem.Name = "logsToolStripMenuItem";
+            this.logsToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.logsToolStripMenuItem.Text = "Logs";
+            // 
+            // toolStripMenuItemExit
+            // 
+            this.toolStripMenuItemExit.Name = "toolStripMenuItemExit";
+            this.toolStripMenuItemExit.Size = new System.Drawing.Size(103, 22);
+            this.toolStripMenuItemExit.Text = "Exit";
+            this.toolStripMenuItemExit.Click += new System.EventHandler(this.toolStripMenuItemExit_Click);
             // 
             // menuStrip1
             // 
@@ -104,7 +101,7 @@ namespace lazy_steam_server
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(316, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(313, 24);
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -112,6 +109,7 @@ namespace lazy_steam_server
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem,
+            this.logsToolStripMenuItem1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -120,60 +118,48 @@ namespace lazy_steam_server
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            // 
+            // logsToolStripMenuItem1
+            // 
+            this.logsToolStripMenuItem1.Name = "logsToolStripMenuItem1";
+            this.logsToolStripMenuItem1.Size = new System.Drawing.Size(116, 22);
+            this.logsToolStripMenuItem1.Text = "Logs";
+            this.logsToolStripMenuItem1.Click += new System.EventHandler(this.logsToolStripMenuItem1_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemExit});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 48);
-            //
-            // toolStripMenuItemExit
-            // 
-            this.toolStripMenuItemExit.Name = "toolStripMenuItemExit";
-            this.toolStripMenuItemExit.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItemExit.Text = "Exit";
-            this.toolStripMenuItemExit.Click += new System.EventHandler(this.toolStripMenuItemExit_Click);
             // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
-            this.ClientSize = new System.Drawing.Size(316, 271);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(313, 239);
             this.Controls.Add(this.textBoxLog);
-            this.Controls.Add(this.btnTcpStart);
-            this.Controls.Add(this.btnUdpStart);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "App";
             this.Text = "Lazy steam server";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.App_FormClosing);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnUdpStart;
-        private System.Windows.Forms.Button btnTcpStart;
         private RichTextBox textBoxLog;
-        private Button button1;
         private NotifyIcon notifyIcon1;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem;
@@ -181,5 +167,8 @@ namespace lazy_steam_server
         private ToolStripMenuItem exitToolStripMenuItem;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem toolStripMenuItemExit;
+        private ToolStripMenuItem toolStripMenuItemShow;
+        private ToolStripMenuItem logsToolStripMenuItem;
+        private ToolStripMenuItem logsToolStripMenuItem1;
     }
 }
