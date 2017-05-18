@@ -23,7 +23,7 @@ namespace lazy_steam_server
             UserName
         }
 
-        public static string Code(string code)
+        public static string SendCom(string code)
         {
             JObject json = new JObject {[JSON_COM] = code};
             return JsonConvert.SerializeObject(json,
@@ -62,7 +62,7 @@ namespace lazy_steam_server
                             });
         }
 
-        public static string GetComFromJson(string s)
+        public static string RecieveCom(string s)
         {
             JObject o = JObject.Parse(s);
             return (string)o[JSON_COM];

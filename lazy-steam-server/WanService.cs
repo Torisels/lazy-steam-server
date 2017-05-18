@@ -40,9 +40,9 @@ namespace lazy_steam_server
                     //Console.WriteLine(mapping.);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Your router doesn't support this.");
             }
         }
 
@@ -50,12 +50,14 @@ namespace lazy_steam_server
         {
             var nat = UPnPNat;
             IStaticPortMappingCollection mappings = nat.StaticPortMappingCollection;
-
-            if (mappings.Count != 0)
+            if (mappings != null)
             {
-                foreach (IStaticPortMapping map in mappings)
+                if (mappings.Count != 0)
                 {
-                    return map.ExternalIPAddress;
+                    foreach (IStaticPortMapping map in mappings)
+                    {
+                        return map.ExternalIPAddress;
+                    }
                 }
             }
             return "not found";

@@ -32,7 +32,7 @@ namespace lazy_steam_server
             SetText("Ip address is: " + GetLocalIpAddress());
             SetText("Host name is: " + Dns.GetHostName());
             SetText("Free TCP port is: " + TcpPort);
-            //SetText("External IP is: "+WanService.GetExternalIpAdress());
+            SetText("External IP is: "+WanService.GetExternalIpAdress());
             SetStartup();
             if(Properties.Settings.Default.run_at_startup)
                 ShowBallonTipOnStartUp("Lazy steam server is running.");

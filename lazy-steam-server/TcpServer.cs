@@ -78,17 +78,17 @@ namespace lazy_steam_server
             ClientSockets.Add(socket);
 
             string text = RecieveToString(socket);
-            string com = ConnectionCodes.GetComFromJson(text);
+            string com = ConnectionCodes.RecieveCom(text);
 
             if (com == ConnectionCodes.TCP_SERVER_REQUEST)
             {
-                SendMessageFromString(ConnectionCodes.Code(ConnectionCodes.TCP_SERVER_RESPONSE), socket);
+                SendMessageFromString(ConnectionCodes.SendCom(ConnectionCodes.TCP_SERVER_RESPONSE), socket);
                 string text1 = RecieveToString(socket);
-                string com1 = ConnectionCodes.GetComFromJson(text1);
+                string com1 = ConnectionCodes.RecieveCom(text1);
                 if (com1 == ConnectionCodes.TCP_SERVER_DATA)
                 {
                     var strings = ConnectionCodes.CodeAndNameFromRecievedString(text1);
-                    SendMessageFromString(ConnectionCodes.Code(ConnectionCodes.TCP_SERVER_REQUEST_RESPONSE), socket);
+                    SendMessageFromString(ConnectionCodes.SendCom(ConnectionCodes.TCP_SERVER_REQUEST_RESPONSE), socket);
                     OnDataRecieved(strings);
                     //if(CodesSet.Add(strings[0]))
 
