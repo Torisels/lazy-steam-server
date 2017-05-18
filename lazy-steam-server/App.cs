@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using Microsoft.Win32;
 
 namespace lazy_steam_server
@@ -31,11 +32,13 @@ namespace lazy_steam_server
             SetText("Ip address is: " + GetLocalIpAddress());
             SetText("Host name is: " + Dns.GetHostName());
             SetText("Free TCP port is: " + TcpPort);
+            //SetText("External IP is: "+WanService.GetExternalIpAdress());
             SetStartup();
             if(Properties.Settings.Default.run_at_startup)
                 ShowBallonTipOnStartUp("Lazy steam server is running.");
             TcpServer.Start();
             UdpServer.Start();
+            SetText("Udp Started\nTcp Started");
         }
         public static void SetText(string text)
         {
@@ -247,6 +250,20 @@ namespace lazy_steam_server
         private void button1_Click_1(object sender, EventArgs e)
         {
             WanService.DisplayallPorts();
+            //var asc = new AesCypher();
+            //Console.WriteLine(asc.Encrypt("ssss","sssss"));
+//            var aes = new RijndaelManaged
+//            {
+//                KeySize = 256,
+//                BlockSize = 128,
+//                Mode = CipherMode.CBC
+//            };
+//            var rfca = new Rfc2898DeriveBytes("pass",1000);
+//            aes.GenerateKey();
+//
+//            aes.IV = rfca.GetBytes(16);
+//            var l = aes.Key.Length;
+//            Console.WriteLine("r"+l);
         }
     }
 }

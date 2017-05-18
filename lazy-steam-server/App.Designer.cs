@@ -57,7 +57,7 @@ namespace lazy_steam_server
             this.textBoxLog.Size = new System.Drawing.Size(289, 204);
             this.textBoxLog.TabIndex = 2;
             this.textBoxLog.Text = "";
-            this.textBoxLog.Visible = false;
+            this.textBoxLog.Visible = global::lazy_steam_server.Properties.Settings.Default.show_logs;
             // 
             // notifyIcon1
             // 
@@ -157,6 +157,7 @@ namespace lazy_steam_server
             this.Controls.Add(this.textBoxLog);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "App";

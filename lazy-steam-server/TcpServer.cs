@@ -90,7 +90,7 @@ namespace lazy_steam_server
                     var strings = ConnectionCodes.CodeAndNameFromRecievedString(text1);
                     SendMessageFromString(ConnectionCodes.Code(ConnectionCodes.TCP_SERVER_REQUEST_RESPONSE), socket);
                     OnDataRecieved(strings);
-                    if(CodesSet.Add(strings[0]))
+                    //if(CodesSet.Add(strings[0]))
 
                 }
             }

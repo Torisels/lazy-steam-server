@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AesCypher.cs" />
     <Compile Include="App.cs">
       <SubType>Form</SubType>
     </Compile>
