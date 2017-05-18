@@ -54,6 +54,7 @@
     <Compile Include="App.Designer.cs">
       <DependentUpon>App.cs</DependentUpon>
     </Compile>
+    <Compile Include="CodesHandling.cs" />
     <Compile Include="ConnectionCodes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,6 +66,7 @@
     </Compile>
     <Compile Include="TcpServer.cs" />
     <Compile Include="UdpServer.cs" />
+    <Compile Include="WanService.cs" />
     <EmbeddedResource Include="App.resx">
       <DependentUpon>App.cs</DependentUpon>
     </EmbeddedResource>

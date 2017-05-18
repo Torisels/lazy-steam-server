@@ -24,7 +24,7 @@ namespace lazy_steam_server
             return port;
         }
 
-        public static void SetupServer()
+        public static void Start()
         {
             try
             {
@@ -43,7 +43,7 @@ namespace lazy_steam_server
             }
         }
 
-        public static void StopServer()
+        public static void Stop()
         {
             try
             {

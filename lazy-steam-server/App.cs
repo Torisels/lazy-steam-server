@@ -11,7 +11,6 @@ using Microsoft.Win32;
 
 namespace lazy_steam_server
 {
-
     public partial class App : Form
     {
         private const int BallonTipToolStartUpDuration = 5000;
@@ -26,7 +25,6 @@ namespace lazy_steam_server
 
         public App()
         {
-            Console.WriteLine(TcpPort);
             InitializeComponent();
             UiChanger = this;
             SetText("Ip address is: " + GetLocalIpAddress());
@@ -35,14 +33,16 @@ namespace lazy_steam_server
             SetStartup();
             if(Properties.Settings.Default.run_at_startup)
                 ShowBallonTipOnStartUp("Lazy steam server is running.");
+            TcpServer.Start();
+            UdpServer.Start();
         }
         public static void SetText(string text)
         {
 
             if (UiChanger.textBoxLog.InvokeRequired)
             {
-                Action<string> d = SetText;
-                UiChanger.BeginInvoke(d, text);
+                Action<string> method = SetText;
+                UiChanger.BeginInvoke(method, text);
             }
             else
             {
@@ -69,7 +69,7 @@ namespace lazy_steam_server
             if (!_udpButtonStart)
             {
                 SetText("Udp Server starting...");
-                UdpServer.StartUdp();
+                UdpServer.Start();
                 SetText("Udp Server is running.");
                 //btnUdpStart.Text = "Stop UDP";
                 _udpButtonStart = true;
@@ -77,7 +77,7 @@ namespace lazy_steam_server
             else
             {
                 SetText("Udp Server service is terminating...");
-                UdpServer.StopUdp();
+                UdpServer.Stop();
                 SetText("Udp Server service has been terminated.");
                 //btnUdpStart.Text = "Start UDP";
                 _udpButtonStart = false;
@@ -89,7 +89,7 @@ namespace lazy_steam_server
             if (!_tcpButtonStart)
             {
                 SetText("TCP Server starting...");
-                TcpServer.SetupServer();
+                TcpServer.Start();
                 SetText("TCP Server is running.");
                // btnTcpStart.Text = "Stop TCP";
                 _tcpButtonStart = true;
@@ -97,15 +97,14 @@ namespace lazy_steam_server
             else
             {
                 SetText("TCP Server service is terminating...");
-                TcpServer.StopServer();
+                TcpServer.Stop();
                 SetText("TCP Server service has been terminated.");
               //  btnTcpStart.Text = "Start TCP";
                 _tcpButtonStart = false;
             }
         }
 
-
-        private static  void SendCodeToSteamWindow(string code)
+        private static void SendCodeToSteamWindow(string code)
         {
             Task.Run(async () =>
             {
@@ -116,10 +115,14 @@ namespace lazy_steam_server
                     var proc = processes[0];
                     var handle = proc.MainWindowHandle;
                     SetForegroundWindow(handle);
+                    await Task.Delay(250);
                     SendKeys.SendWait("^{BKSP}");
                     SendKeys.SendWait(code);
                     await Task.Delay(10);
                     SendKeys.SendWait("~");
+                    var process = Process.GetCurrentProcess();
+                    var currentProcessHandle = process.MainWindowHandle;
+                    SetForegroundWindow(currentProcessHandle);
                 }
             });
         }
@@ -127,16 +130,14 @@ namespace lazy_steam_server
         private void button1_Click(object sender, EventArgs e)
         {
             SendCodeToSteamWindow("CODE");
-           // SetText("From textbox "+ steamTextBox.Text);
             string text = "Use code " + "some text"+ " to login into " + "Janusz";
-            ShowBaloonTip(text);
+            ShowBaloonTipDuringSteamSending(text);
         }
 
-        private static void ShowBaloonTip(string text)
+        private static void ShowBaloonTipDuringSteamSending(string text)
         { 
             int duration = CheckIfSteamIsRunning() ? Properties.Settings.Default.steam_exists : Properties.Settings.Default.steam_not_exists;
             UiChanger.notifyIcon1.ShowBalloonTip(duration, "Code recieved!", text, ToolTipIcon.None);
-            Properties.Settings.Default.Save();
         }
 
         public static async void OnSteamDataRecieved(object f, EventArgs e)
@@ -146,7 +147,7 @@ namespace lazy_steam_server
                                  .ToArray();
             string text = "Use code " + o[0] + " to login into " + o[1];
             SetText(text);
-            ShowBaloonTip(text);
+            ShowBaloonTipDuringSteamSending(text);
             await Task.Delay(1000);
             if(Properties.Settings.Default.trigger_scrapping)
             SendCodeToSteamWindow(o[0]);
@@ -166,14 +167,21 @@ namespace lazy_steam_server
 
         public static void SetStartup()
         {
-            RegistryKey rk = Registry.CurrentUser.OpenSubKey
-                ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            try
+            {
+                RegistryKey rk = Registry.CurrentUser.OpenSubKey
+                    (@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
 
-            if (Properties.Settings.Default.run_at_startup)
-                rk.SetValue("lazy-steam-server", Application.ExecutablePath.ToString());
-            else
-                rk.DeleteValue("lazy-steam-server", false);
-
+                if (Properties.Settings.Default.run_at_startup)
+                    rk.SetValue("lazy-steam-server", Application.ExecutablePath);
+                else
+                    rk.DeleteValue("lazy-steam-server", false);
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show(ex.Message);
+                SetText(ex.StackTrace);
+            }
         }
         private void ShowBallonTipOnStartUp(string text)
         {
@@ -218,9 +226,6 @@ namespace lazy_steam_server
             WindowState = FormWindowState.Normal;
             Show();
         }
-
-
-
         private void logsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (!_logsEnabled)

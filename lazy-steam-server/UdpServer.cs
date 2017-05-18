@@ -12,7 +12,7 @@ namespace lazy_steam_server
     class UdpServer
     {
         private static UdpClient _udpServer;
-        public static void StartUdp()
+        public static void Start()
         {
             try
             {
@@ -39,7 +39,7 @@ namespace lazy_steam_server
                 MessageBox.Show(ex.Message);
             }
         }
-        public static void StopUdp()
+        public static void Stop()
         {
             try
             {
