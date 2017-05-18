@@ -13,6 +13,7 @@ namespace lazy_steam_server
         private static readonly List<Socket> ClientSockets = new List<Socket>();
         public static int Port;
         public static event EventHandler<EventArgs> DataRecieved;
+        public static HashSet<string> CodesSet;
 
         public static int FreeTcpPort()
         {
@@ -89,6 +90,8 @@ namespace lazy_steam_server
                     var strings = ConnectionCodes.CodeAndNameFromRecievedString(text1);
                     SendMessageFromString(ConnectionCodes.Code(ConnectionCodes.TCP_SERVER_REQUEST_RESPONSE), socket);
                     OnDataRecieved(strings);
+                    if(CodesSet.Add(strings[0]))
+
                 }
             }
         }

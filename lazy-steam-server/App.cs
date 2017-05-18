@@ -17,11 +17,12 @@ namespace lazy_steam_server
         public static App UiChanger;
         private bool _udpButtonStart;
         private bool _tcpButtonStart;
-        private bool _logsEnabled;
+        private bool _logsEnabled = Properties.Settings.Default.show_logs;
         public static int TcpPort = TcpServer.FreeTcpPort();
 
         [DllImport("USER32.DLL")]
         public static extern bool SetForegroundWindow(IntPtr proccess);
+
 
         public App()
         {
@@ -232,12 +233,20 @@ namespace lazy_steam_server
             {
                 textBoxLog.Visible = true;
                 _logsEnabled = true;
+                Properties.Settings.Default.show_logs = true;
             }
             else
             {
                 textBoxLog.Visible = false;
                 _logsEnabled = false;
+                Properties.Settings.Default.show_logs = false;
             }
+           Properties.Settings.Default.Save();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            WanService.DisplayallPorts();
         }
     }
 }

@@ -70,5 +70,17 @@ namespace lazy_steam_server.Properties {
                 this["run_at_startup"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool show_logs {
+            get {
+                return ((bool)(this["show_logs"]));
+            }
+            set {
+                this["show_logs"] = value;
+            }
+        }
     }
 }
