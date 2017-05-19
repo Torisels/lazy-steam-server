@@ -12,9 +12,7 @@ namespace lazy_steam_server
     class WanService
     {
         private static UPnPNATClass _UPnPNat = null;
-        private static UPnPNATClass _upnpnat = new UPnPNATClass();
 
-        private  const string KeyIV = "sss"; 
 
         private static UPnPNATClass UPnPNat
         {
