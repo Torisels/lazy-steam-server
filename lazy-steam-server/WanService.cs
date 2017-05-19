@@ -12,8 +12,6 @@ namespace lazy_steam_server
     class WanService
     {
         private static UPnPNATClass _UPnPNat = null;
-
-
         private static UPnPNATClass UPnPNat
         {
             get
@@ -61,7 +59,40 @@ namespace lazy_steam_server
             return "not found";
         }
 
-       
+        public static void AddPort()
+        {
+            var nat = UPnPNat;
+            IStaticPortMappingCollection mappings = nat.StaticPortMappingCollection;
+            mappings.Add(199, "TCP", TcpServer.Port, "192.168.0.51", true, "Local Web Server");          
+        }
+
+        public static bool GetFreePort(out int port)
+        {
+            port = 0;
+            var set = new HashSet<int>();
+            var nat = UPnPNat;
+            IStaticPortMappingCollection mappings = nat.StaticPortMappingCollection;
+            if (mappings != null)
+            {
+                if (mappings.Count != 0)
+                {
+                    foreach (IStaticPortMapping map in mappings)
+                    {
+                        set.Add(map.ExternalPort);
+                    }
+                }
+                port = set.Max() + 1;
+            }
+
+            var UPnPNat1 = new UPnPNATClass();
+            var newMappings = UPnPNat1.DynamicPortMappingCollection;
+            var newList = new HashSet<int>();
+            foreach (IStaticPortMapping map in newMappings)
+                {
+             newList.Add(map.ExternalPort);   
+             }
+            return newList.Contains(port);
+        }
     }
    
 }

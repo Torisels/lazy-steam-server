@@ -25,6 +25,7 @@ namespace lazy_steam_server
 
         private void btnSaveSettings_Click(object sender, EventArgs e)
         {
+            btnSaveSettings.Enabled = false;
             int steamRunningDuration = 0;
             int steamNotRunningDuration = 0;
 
@@ -34,10 +35,13 @@ namespace lazy_steam_server
                 Properties.Settings.Default.steam_exists = steamRunningDuration;
                 Properties.Settings.Default.steam_not_exists = steamNotRunningDuration;
                 Properties.Settings.Default.Save();
+                Close();
+                btnSaveSettings.Enabled = true;
             }
             else
             {
                 MessageBox.Show("Duration time values must be integers", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                btnSaveSettings.Enabled = true;
             }
         }
 
