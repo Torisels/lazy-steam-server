@@ -3,29 +3,42 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace lazy_steam_server
 {
     internal class TcpServer
     {
-        public static Socket ServerSocket;
-        private static readonly List<Socket> ClientSockets = new List<Socket>();
-        public static int Port;
-        public static event EventHandler<EventArgs> DataRecieved;
-        public static HashSet<string> CodesSet;
+        public Socket ServerSocket;
+        private readonly List<Socket> ClientSockets = new List<Socket>();
+        public int Port;
+        public event EventHandler<EventArgs> DataRecieved;
+        public HashSet<string> CodesSet;
+        public delegate void TextInvokerDelegate(string s);
+
+        public static int SPort;
+
+        private readonly TextInvokerDelegate _setTextInvoker;
+
+
+        public TcpServer(TextInvokerDelegate setTextInvoker, int port)
+        {
+            _setTextInvoker = setTextInvoker;
+            Port = port;
+            SPort = port;
+        }
 
         public static int FreeTcpPort()
         {
             TcpListener l = new TcpListener(IPAddress.Loopback, 0);
             l.Start();
             int port = ((IPEndPoint) l.LocalEndpoint).Port;
-            l.Stop();
-            Port = port;
+            l.Stop();         
             return port;
         }
 
-        public static void Start()
+        public void Start()
         {
             try
             {
@@ -44,7 +57,7 @@ namespace lazy_steam_server
             }
         }
 
-        public static void Stop()
+        public void Stop()
         {
             try
             {
@@ -62,7 +75,7 @@ namespace lazy_steam_server
 
         }
 
-        public static void AcceptCallback(IAsyncResult ar)
+        public void AcceptCallback(IAsyncResult ar)
         {
             Socket socket;
             try
@@ -90,35 +103,34 @@ namespace lazy_steam_server
                     var strings = ConnectionCodes.CodeAndNameFromRecievedString(text1);
                     SendMessageFromString(ConnectionCodes.SendCom(ConnectionCodes.TCP_SERVER_REQUEST_RESPONSE), socket);
                     OnDataRecieved(strings);
-                    //if(CodesSet.Add(strings[0]))
 
                 }
             }
         }
 
-        private static string RecieveToString(Socket s)
+        private string RecieveToString(Socket s)
         {
-            byte[] receivebuffer = new byte[1024];
-            int recievedbytes = s.Receive(receivebuffer);
-            byte[] databuffer = new byte[recievedbytes];
+            var receivebuffer = new byte[1024];
+            var recievedbytes = s.Receive(receivebuffer);
+            var databuffer = new byte[recievedbytes];
             Array.Copy(receivebuffer, databuffer, recievedbytes);
             Array.Clear(receivebuffer, 0, receivebuffer.Length);
-            string recstring = Encoding.ASCII.GetString(databuffer);
+            var recstring = Encoding.ASCII.GetString(databuffer);
             Array.Clear(databuffer, 0, databuffer.Length);
             // ReSharper disable once LocalizableElement
             Console.WriteLine("Message received: " + recstring);
-            App.SetText("Message received: " + recstring);
+            _setTextInvoker("Message received: " + recstring);
             return recstring;
         }
 
-        private static void SendMessageFromString(string s, Socket sock)
+        private void SendMessageFromString(string s, Socket sock)
         {
             try
             {
                 var sendingbyte = Encoding.ASCII.GetBytes(s);
                 sock.Send(sendingbyte);
                 Console.WriteLine("Message: " + s + " has been sent successfully");
-                App.SetText("Message: " + s + " has been sent successfully");
+                _setTextInvoker("Message: " + s + " has been sent successfully");
                 Array.Clear(sendingbyte, 0, sendingbyte.Length);
             }
             catch (SocketException ex)
@@ -127,7 +139,7 @@ namespace lazy_steam_server
             }
         }
 
-        protected static void OnDataRecieved(string[] strings)
+        protected void OnDataRecieved(string[] strings)
         {
             DataRecieved?.Invoke(strings, EventArgs.Empty);
         }

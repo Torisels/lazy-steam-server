@@ -8,8 +8,9 @@ namespace lazy_steam_server
 {
     class AesCypher
     {
-        private readonly byte[] _keyIv = Encoding.ASCII.GetBytes("something"); //16
+        private readonly byte[] _keyIv = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};//16
         private readonly RijndaelManaged _aes;
+        public byte[] AlgoKey { get;}
 
         public AesCypher()
         {
@@ -20,6 +21,8 @@ namespace lazy_steam_server
                 IV = _keyIv,
                 Mode = CipherMode.CBC
             };
+            _aes.GenerateIV();
+            AlgoKey = _aes.Key;
         }
         public string Encrypt(string key, byte[] message)
         {
@@ -60,6 +63,11 @@ namespace lazy_steam_server
                              .Where(x => x % 2 == 0)
                              .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
                              .ToArray();
+        }
+
+        public string HexString(byte[] bytes)
+        {
+            return BitConverter.ToString(bytes);
         }
     }
 }

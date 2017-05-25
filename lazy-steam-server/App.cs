@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Text;
 using Microsoft.Win32;
 
 namespace lazy_steam_server
@@ -36,13 +37,14 @@ namespace lazy_steam_server
             SetStartup();
             if(Properties.Settings.Default.run_at_startup)
                 ShowBallonTipOnStartUp("Lazy steam server is running.");
-            TcpServer.Start();
+            var tcpServer = new TcpServer(SetText1,TcpPort);
+            tcpServer.Start();
             UdpServer.Start();
             SetText("Udp Started\nTcp Started");
+ 
         }
         public static void SetText(string text)
         {
-
             if (UiChanger.textBoxLog.InvokeRequired)
             {
                 Action<string> method = SetText;
@@ -67,6 +69,20 @@ namespace lazy_steam_server
             }
             throw new Exception("Local IP Address Not Found!");
         }
+        public void SetText1(string text)
+        {
+            if (UiChanger.textBoxLog.InvokeRequired)
+            {
+                Action<string> method = SetText;
+                UiChanger.BeginInvoke(method, text);
+            }
+            else
+            {
+                UiChanger.textBoxLog.Text += text + "\n";
+                UiChanger.textBoxLog.SelectionStart = UiChanger.textBoxLog.Text.Length;
+                UiChanger.textBoxLog.ScrollToCaret();
+            }
+        }
 
         private void btnUdpStart_Click(object sender, EventArgs e)
         {
@@ -88,25 +104,25 @@ namespace lazy_steam_server
             }
         }
 
-        private void btnTcpStart_Click(object sender, EventArgs e)
-        {
-            if (!_tcpButtonStart)
-            {
-                SetText("TCP Server starting...");
-                TcpServer.Start();
-                SetText("TCP Server is running.");
-               // btnTcpStart.Text = "Stop TCP";
-                _tcpButtonStart = true;
-            }
-            else
-            {
-                SetText("TCP Server service is terminating...");
-                TcpServer.Stop();
-                SetText("TCP Server service has been terminated.");
-              //  btnTcpStart.Text = "Start TCP";
-                _tcpButtonStart = false;
-            }
-        }
+//        private void btnTcpStart_Click(object sender, EventArgs e)
+//        {
+//            if (!_tcpButtonStart)
+//            {
+//                SetText("TCP Server starting...");
+//                TcpServer.Start();
+//                SetText("TCP Server is running.");
+//                btnTcpStart.Text = "Stop TCP";
+//                _tcpButtonStart = true;
+//            }
+//            else
+//            {
+//                SetText("TCP Server service is terminating...");
+//                TcpServer.Stop();
+//                SetText("TCP Server service has been terminated.");
+//                btnTcpStart.Text = "Start TCP";
+//                _tcpButtonStart = false;
+//            }
+//        }
 
         private static void SendCodeToSteamWindow(string code)
         {
