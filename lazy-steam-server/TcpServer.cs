@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace lazy_steam_server
 {
@@ -90,14 +91,14 @@ namespace lazy_steam_server
 
             ClientSockets.Add(socket);
 
-            string text = RecieveToString(socket);
-            string com = ConnectionCodes.RecieveCom(text);
+            var text = RecieveToString(socket);
+            var com = ConnectionCodes.RecieveCom(text);
 
             if (com == ConnectionCodes.TCP_SERVER_REQUEST)
             {
                 SendMessageFromString(ConnectionCodes.SendCom(ConnectionCodes.TCP_SERVER_RESPONSE), socket);
-                string text1 = RecieveToString(socket);
-                string com1 = ConnectionCodes.RecieveCom(text1);
+                var text1 = RecieveToString(socket);
+                var com1 = ConnectionCodes.RecieveCom(text1);
                 if (com1 == ConnectionCodes.TCP_SERVER_DATA)
                 {
                     var strings = ConnectionCodes.CodeAndNameFromRecievedString(text1);
@@ -110,17 +111,24 @@ namespace lazy_steam_server
 
         private string RecieveToString(Socket s)
         {
-            var receivebuffer = new byte[1024];
-            var recievedbytes = s.Receive(receivebuffer);
-            var databuffer = new byte[recievedbytes];
-            Array.Copy(receivebuffer, databuffer, recievedbytes);
-            Array.Clear(receivebuffer, 0, receivebuffer.Length);
-            var recstring = Encoding.ASCII.GetString(databuffer);
-            Array.Clear(databuffer, 0, databuffer.Length);
-            // ReSharper disable once LocalizableElement
-            Console.WriteLine("Message received: " + recstring);
-            _setTextInvoker("Message received: " + recstring);
-            return recstring;
+            try
+            {
+                var receivebuffer = new byte[1024];
+                var recievedbytes = s.Receive(receivebuffer);
+                var databuffer = new byte[recievedbytes];
+                Array.Copy(receivebuffer, databuffer, recievedbytes);
+                Array.Clear(receivebuffer, 0, receivebuffer.Length);
+                var recstring = Encoding.ASCII.GetString(databuffer);
+                Array.Clear(databuffer, 0, databuffer.Length);
+                Console.WriteLine("Message received: " + recstring);
+                _setTextInvoker("Message received: " + recstring);
+                return recstring;
+            }
+            catch (SocketException ex)
+            {
+                MessageBox.Show("Error when recieving message from socket: " + ex.Message);
+            }
+            return string.Empty;
         }
 
         private void SendMessageFromString(string s, Socket sock)
@@ -142,6 +150,35 @@ namespace lazy_steam_server
         protected void OnDataRecieved(string[] strings)
         {
             DataRecieved?.Invoke(strings, EventArgs.Empty);
+        }
+
+        private int GenerateCode()
+        {
+            var rnd = new Random(73123123);
+            return rnd.Next(1000,10000);
+        }
+
+        private bool CheckIfCodeIsValid(int code, Socket socket)
+        {
+            var codeS = code.ToString();
+            bool valid = false;
+            int counter = 0;
+            do
+            {
+                SendMessageFromString(ConnectionCodes.SendCom(ConnectionCodes.SERVER_CODE_REQUEST), socket);
+                var str = RecieveToString(socket);
+                var com = ConnectionCodes.RecieveCom(str);
+                var codeR = ConnectionCodes.RecieveCode(str);
+
+                if (com == ConnectionCodes.CLIENT_CODE_RESPONSE && codeR == codeS)
+                    valid = true;
+                else
+                    counter++;
+
+
+            } while (!valid && counter <= 25);
+
+            return counter <= 25 && valid;
         }
     }
 }
