@@ -63,7 +63,7 @@ namespace lazy_steam_server
         {
             var nat = UPnPNat;
             IStaticPortMappingCollection mappings = nat.StaticPortMappingCollection;
-            mappings.Add(199, "TCP", TcpServer.Port, "192.168.0.51", true, "Local Web Server");          
+            mappings?.Add(199, "TCP", TcpServer.Port, "192.168.0.51", true, "Local Web Server");
         }
 
         public static bool GetFreePort(out int port)

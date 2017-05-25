@@ -52,8 +52,11 @@ namespace lazy_steam_server
             // 
             this.textBoxLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxLog.BackColor = System.Drawing.SystemColors.Window;
+            this.textBoxLog.ForeColor = System.Drawing.Color.Black;
             this.textBoxLog.Location = new System.Drawing.Point(12, 27);
             this.textBoxLog.Name = "textBoxLog";
+            this.textBoxLog.ReadOnly = true;
             this.textBoxLog.Size = new System.Drawing.Size(289, 204);
             this.textBoxLog.TabIndex = 2;
             this.textBoxLog.Text = "";

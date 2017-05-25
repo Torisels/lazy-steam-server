@@ -252,7 +252,7 @@ namespace lazy_steam_server
             SetText(WanService.GetExternalIpAdress());
             WanService.AddPort();
             WanService.DisplayallPorts();
-            Console.WriteLine(WanService.GetFreePort());
+           // Console.WriteLine(WanService.GetFreePort());
             //var asc = new AesCypher();
             //Console.WriteLine(asc.Encrypt("ssss","sssss"));
 //            var aes = new RijndaelManaged
