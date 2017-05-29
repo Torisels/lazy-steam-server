@@ -72,7 +72,6 @@
             this.textBoxSteamNotRunning.Size = new System.Drawing.Size(83, 20);
             this.textBoxSteamNotRunning.TabIndex = 3;
             this.textBoxSteamNotRunning.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxSteamNotRunning_KeyPress);
-            this.textBoxSteamNotRunning.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBoxSteamNotRunning_KeyUp);
             // 
             // btnSaveSettings
             // 

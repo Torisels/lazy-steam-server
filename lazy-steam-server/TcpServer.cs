@@ -152,15 +152,14 @@ namespace lazy_steam_server
             DataRecieved?.Invoke(strings, EventArgs.Empty);
         }
 
-        private int GenerateCode()
+        private string GenerateCode()
         {
             var rnd = new Random(73123123);
-            return rnd.Next(1000,10000);
+            return rnd.Next(1000,10000).ToString();
         }
 
-        private bool CheckIfCodeIsValid(int code, Socket socket)
+        private bool CheckIfCodeIsValid(string code, Socket socket)
         {
-            var codeS = code.ToString();
             bool valid = false;
             int counter = 0;
             do
@@ -170,7 +169,7 @@ namespace lazy_steam_server
                 var com = ConnectionCodes.RecieveCom(str);
                 var codeR = ConnectionCodes.RecieveCode(str);
 
-                if (com == ConnectionCodes.CLIENT_CODE_RESPONSE && codeR == codeS)
+                if (com == ConnectionCodes.CLIENT_CODE_RESPONSE && codeR == code)
                     valid = true;
                 else
                     counter++;

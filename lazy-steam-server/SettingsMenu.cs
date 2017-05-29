@@ -45,11 +45,6 @@ namespace lazy_steam_server
             }
         }
 
-        private void textBoxSteamNotRunning_KeyUp(object sender, KeyEventArgs e)
-        {
-
-        }
-
         private void textBoxSteamNotRunning_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')

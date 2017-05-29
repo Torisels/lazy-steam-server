@@ -41,7 +41,7 @@ namespace lazy_steam_server
             tcpServer.Start();
             UdpServer.Start();
             SetText("Udp Started\nTcp Started");
- 
+
         }
         public static void SetText(string text)
         {
@@ -268,6 +268,7 @@ namespace lazy_steam_server
             SetText(WanService.GetExternalIpAdress());
             WanService.AddPort();
             WanService.DisplayallPorts();
+            SetCodeOnForm("1144");
            // Console.WriteLine(WanService.GetFreePort());
             //var asc = new AesCypher();
             //Console.WriteLine(asc.Encrypt("ssss","sssss"));
@@ -283,6 +284,34 @@ namespace lazy_steam_server
 //            aes.IV = rfca.GetBytes(16);
 //            var l = aes.Key.Length;
 //            Console.WriteLine("r"+l);
+        }
+
+        public void SetCodeOnForm(string code)
+        {
+            var form = new CodeForm { StartPosition = FormStartPosition.CenterParent };
+            form.SetLabelContent(code);
+            form.ShowDialog();
+        }
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == NativeMethods.WM_SHOWME)
+            {
+                ShowMe();
+            }
+            base.WndProc(ref m);
+        }
+        private void ShowMe()
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                WindowState = FormWindowState.Normal;
+            }
+            // get our current "TopMost" value (ours will always be false though)
+            bool top = TopMost;
+            // make our form jump to the top of everything
+            TopMost = true;
+            // set it back to whatever it was
+            TopMost = top;
         }
     }
 }
