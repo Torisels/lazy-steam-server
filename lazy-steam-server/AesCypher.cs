@@ -11,6 +11,7 @@ namespace lazy_steam_server
         private readonly byte[] _keyIv = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};//16
         private readonly RijndaelManaged _aes;
         public byte[] AlgoKey { get;}
+        public string AlgoKeyHexString { get; }
 
         public AesCypher()
         {
@@ -23,6 +24,7 @@ namespace lazy_steam_server
             };
             _aes.GenerateIV();
             AlgoKey = _aes.Key;
+            AlgoKeyHexString = HexString(AlgoKey);
         }
         public string Encrypt(string key, byte[] message)
         {

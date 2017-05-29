@@ -12,6 +12,7 @@ namespace lazy_steam_server
     class WanService
     {
         private static UPnPNATClass _UPnPNat = null;
+
         private static UPnPNATClass UPnPNat
         {
             get
@@ -42,8 +43,9 @@ namespace lazy_steam_server
             }
         }
 
-        public static string GetExternalIpAdress()
+        public static bool GetExternalIpAdress(out string ip)
         {
+            ip = string.Empty;
             var nat = UPnPNat;
             IStaticPortMappingCollection mappings = nat.StaticPortMappingCollection;
             if (mappings != null)
@@ -52,11 +54,18 @@ namespace lazy_steam_server
                 {
                     foreach (IStaticPortMapping map in mappings)
                     {
-                        return map.ExternalIPAddress;
+                        ip = map.ExternalIPAddress;
+                        if (ip != String.Empty)
+                            return true;
                     }
+                    return false;
+                }
+                else
+                {
+                    AddPort();
                 }
             }
-            return "not found";
+            return false;
         }
 
         public static void AddPort()

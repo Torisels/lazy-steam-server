@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -31,6 +32,7 @@ namespace lazy_steam_server
         public const string JSON_ENC_KEY = "encryption_key";
         public const string JSON_EXT_PORT = "external_port";
         public const string JSON_EXT_HOST = "external_host";
+        public const string JSON_ID = "Id";
 
         public enum RecievedInfo
         {
@@ -41,12 +43,7 @@ namespace lazy_steam_server
         public static string SendCom(string code)
         {
             JObject json = new JObject {[JSON_COM] = code};
-            return JsonConvert.SerializeObject(json,
-                            Formatting.None,
-                            new JsonSerializerSettings
-                            {
-                                NullValueHandling = NullValueHandling.Ignore
-                            });
+            return JsonConverting(json);
         }
 
         public static string[] CodeAndNameFromRecievedString(string recieved)
@@ -69,12 +66,7 @@ namespace lazy_steam_server
         public static string UdpResponseCode()
         {
             JObject json = new JObject { [JSON_COM] = UDP_SERVER_RESPONSE, ["server_hostname"] = Dns.GetHostName(),["communication_port"] = App.TcpPort};
-            return JsonConvert.SerializeObject(json,
-                            Formatting.None,
-                            new JsonSerializerSettings
-                            {
-                                NullValueHandling = NullValueHandling.Ignore
-                            });
+            return JsonConverting(json);
         }
 
         public static string RecieveCom(string s)
@@ -83,10 +75,57 @@ namespace lazy_steam_server
             return (string)o[JSON_COM];
         }
 
-        public static string RecieveCode(string s)
+        public static string RecieveSecurityCode(string s)
         {
-            JObject o = JObject.Parse(s);
-            return (string)o[JSON_SEC_CODE];
+            try
+            {
+                JObject o = JObject.Parse(s);
+                if (o != null)
+                    return (string) o[JSON_SEC_CODE];
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+            return string.Empty;
+        }
+
+        public static string EncryptionKeyExchange(string code)
+        {
+            JObject json = new JObject { [JSON_COM] = SERVER_KEY_EXCHANGE, [JSON_ENC_KEY] = code, [JSON_ID] = Properties.Settings.Default.unique_id};
+            return JsonConverting(json);
+        }
+
+        public static string ClientId(string s)
+        {
+            try
+            {
+                JObject o = JObject.Parse(s);
+                if (o != null)
+                    return (string)o[JSON_ID];
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+            return string.Empty;
+        }
+
+        public static string SetupPortResponse(int extPort, string extIp)
+        {
+            JObject json = new JObject { [JSON_COM] = SERVER_PORT_RESPONSE, [JSON_EXT_PORT] = extPort, [JSON_EXT_HOST] = extIp};
+            return JsonConverting(json);
+        }
+
+
+        public static string JsonConverting(JObject json)
+        {
+            return JsonConvert.SerializeObject(json,
+                            Formatting.None,
+                            new JsonSerializerSettings
+                            {
+                                NullValueHandling = NullValueHandling.Ignore
+                            });
         }
     }
 }

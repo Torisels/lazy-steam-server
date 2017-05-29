@@ -82,5 +82,17 @@ namespace lazy_steam_server.Properties {
                 this["show_logs"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int unique_id {
+            get {
+                return ((int)(this["unique_id"]));
+            }
+            set {
+                this["unique_id"] = value;
+            }
+        }
     }
 }

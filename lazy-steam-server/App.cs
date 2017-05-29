@@ -42,6 +42,12 @@ namespace lazy_steam_server
             UdpServer.Start();
             SetText("Udp Started\nTcp Started");
 
+            if (Properties.Settings.Default.unique_id == 0)
+            {
+                Properties.Settings.Default.unique_id = GenerateRandomId();
+                Properties.Settings.Default.Save();
+            }
+            Console.WriteLine(Properties.Settings.Default.unique_id);
         }
         public static void SetText(string text)
         {
@@ -286,7 +292,7 @@ namespace lazy_steam_server
 //            Console.WriteLine("r"+l);
         }
 
-        public void SetCodeOnForm(string code)
+        public static void SetCodeOnForm(string code)
         {
             var form = new CodeForm { StartPosition = FormStartPosition.CenterParent };
             form.SetLabelContent(code);
@@ -312,6 +318,14 @@ namespace lazy_steam_server
             TopMost = true;
             // set it back to whatever it was
             TopMost = top;
+        }
+
+        private int GenerateRandomId()
+        {
+            Random rnd = new Random();
+            Byte[] b = new Byte[4];
+            rnd.NextBytes(b);
+            return BitConverter.ToInt32(b,0);
         }
     }
 }

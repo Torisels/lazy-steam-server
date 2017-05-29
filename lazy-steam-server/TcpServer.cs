@@ -17,6 +17,7 @@ namespace lazy_steam_server
         public event EventHandler<EventArgs> DataRecieved;
         public HashSet<string> CodesSet;
         public delegate void TextInvokerDelegate(string s);
+        public Dictionary<string, AesCypher> CyphersDictionary = new Dictionary<string, AesCypher>();
 
         public static int SPort;
 
@@ -88,25 +89,28 @@ namespace lazy_steam_server
             {
                 return;
             }
-
             ClientSockets.Add(socket);
 
-            var text = RecieveToString(socket);
-            var com = ConnectionCodes.RecieveCom(text);
+            var com = ConnectionCodes.RecieveCom(RecieveToString(socket)); // FIRST STEP
+            if (com != ConnectionCodes.CLIENT_BEGIN_SETUP) 
+                return;
+               
+            if (!CheckIfCodeIsValid(socket)) //SECOND STEP (RECIEVING security_code)
+                return;
 
-            if (com == ConnectionCodes.TCP_SERVER_REQUEST)
-            {
-                SendMessageFromString(ConnectionCodes.SendCom(ConnectionCodes.TCP_SERVER_RESPONSE), socket);
-                var text1 = RecieveToString(socket);
-                var com1 = ConnectionCodes.RecieveCom(text1);
-                if (com1 == ConnectionCodes.TCP_SERVER_DATA)
-                {
-                    var strings = ConnectionCodes.CodeAndNameFromRecievedString(text1);
-                    SendMessageFromString(ConnectionCodes.SendCom(ConnectionCodes.TCP_SERVER_REQUEST_RESPONSE), socket);
-                    OnDataRecieved(strings);
+            var aesCrypt = new AesCypher();
+            SendMessageFromString(ConnectionCodes.EncryptionKeyExchange(aesCrypt.AlgoKeyHexString),socket); //THIRD STEP SEND ENC CODE
 
-                }
-            }
+            com = ConnectionCodes.RecieveCom(RecieveToString(socket)); //FOURTH STEP GET CLIENT ID
+            if (com != ConnectionCodes.CLIENT_PORT_REQUEST)
+                return;
+            if (ConnectionCodes.ClientId(com) == string.Empty)
+                return;
+            CyphersDictionary.Add(ConnectionCodes.ClientId(com),aesCrypt); //ADD ID TO DICT
+            SendMessageFromString(ConnectionCodes.SetupPortResponse(extPort, extIp), socket);
+
+
+
         }
 
         private string RecieveToString(Socket s)
@@ -158,8 +162,11 @@ namespace lazy_steam_server
             return rnd.Next(1000,10000).ToString();
         }
 
-        private bool CheckIfCodeIsValid(string code, Socket socket)
+        private bool CheckIfCodeIsValid(Socket socket)
         {
+            var code = GenerateCode();             //generate code
+            App.SetCodeOnForm(code);              //show code
+
             bool valid = false;
             int counter = 0;
             do
@@ -167,7 +174,7 @@ namespace lazy_steam_server
                 SendMessageFromString(ConnectionCodes.SendCom(ConnectionCodes.SERVER_CODE_REQUEST), socket);
                 var str = RecieveToString(socket);
                 var com = ConnectionCodes.RecieveCom(str);
-                var codeR = ConnectionCodes.RecieveCode(str);
+                var codeR = ConnectionCodes.RecieveSecurityCode(str);
 
                 if (com == ConnectionCodes.CLIENT_CODE_RESPONSE && codeR == code)
                     valid = true;
@@ -179,5 +186,6 @@ namespace lazy_steam_server
 
             return counter <= 25 && valid;
         }
+        
     }
 }
