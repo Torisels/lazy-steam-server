@@ -89,18 +89,32 @@ namespace lazy_steam_server
                     {
                         set.Add(map.ExternalPort);
                     }
+                    port = set.Max() + 1;
                 }
-                port = set.Max() + 1;
-            }
+                else
+                    port = 1;
 
-            var UPnPNat1 = new UPnPNATClass();
-            var newMappings = UPnPNat1.DynamicPortMappingCollection;
-            var newList = new HashSet<int>();
-            foreach (IStaticPortMapping map in newMappings)
-                {
-             newList.Add(map.ExternalPort);   
-             }
-            return newList.Contains(port);
+                return true;
+            }
+            return false;
+        }
+
+        private static string AddAndRemovePortForCheckingExternalIpAdress()
+        {
+            var nat = UPnPNat;
+            var freeLocalPort = TcpServer.FreeTcpPort();
+            string extIP = string.Empty;
+            int extPort;
+            GetFreePort(out extPort);
+            IStaticPortMappingCollection mappings = nat.StaticPortMappingCollection;
+            mappings?.Add(extPort, "TCP", freeLocalPort, "127.0.0.1", true, "External IP Test");
+            foreach (IStaticPortMapping map in mappings)
+            {
+                extIP = map.ExternalIPAddress;
+                break;
+            }
+            mappings.Remove(extPort, "TCP");
+            return extIP;
         }
     }
    
