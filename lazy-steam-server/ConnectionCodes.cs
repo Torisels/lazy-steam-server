@@ -32,6 +32,7 @@ namespace lazy_steam_server
         public const string JSON_EXT_HOST = "external_host";
         public const string JSON_SERVER_ID = "server_id";
         public const string JSON_CLIENT_ID = "app_id";
+        public const string JSON_TRIES = "tries";
 
         public enum RecievedInfo
         {
@@ -77,7 +78,7 @@ namespace lazy_steam_server
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message+"\n"+ex.StackTrace);
+                MessageBox.Show(ex.StackTrace);
                 return string.Empty;
             }
         }
@@ -111,9 +112,9 @@ namespace lazy_steam_server
                 if (o != null)
                     return (string)o[JSON_CLIENT_ID];
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return string.Empty;
+                MessageBox.Show(ex.Message);
             }
             return string.Empty;
         }
@@ -124,6 +125,11 @@ namespace lazy_steam_server
             return JsonConverting(json);
         }
 
+        public static string SendServerCodeRequest(int attempts)
+        {
+            JObject json = new JObject { [JSON_COM] = SERVER_CODE_REQUEST, [JSON_TRIES] = attempts};
+            return JsonConverting(json);
+        }
 
         public static string JsonConverting(JObject json)
         {

@@ -51,6 +51,7 @@ namespace lazy_steam_server
                 Properties.Settings.Default.Save();
             }
             Console.WriteLine(Properties.Settings.Default.unique_id);
+            Console.WriteLine(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
         }
         public static void SetText(string text)
         {
@@ -331,7 +332,7 @@ namespace lazy_steam_server
             Random rnd = new Random();
             Byte[] b = new Byte[4];
             rnd.NextBytes(b);
-            return BitConverter.ToInt32(b,0);
+            return Math.Abs(BitConverter.ToInt32(b,0));
         }
     }
 }

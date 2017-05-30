@@ -104,9 +104,9 @@ namespace lazy_steam_server
             com = ConnectionCodes.RecieveCom(RecieveToString(socket)); //FOURTH STEP GET CLIENT ID
             if (com != ConnectionCodes.CLIENT_PORT_REQUEST)
                 return;
-            if (ConnectionCodes.ClientId(com) == string.Empty)
-                return;
-            CyphersDictionary.Add(ConnectionCodes.ClientId(com),aesCrypt); //ADD ID TO DICT
+//            if (ConnectionCodes.ClientId(com) == string.Empty)
+//                return;
+           // CyphersDictionary.Add(ConnectionCodes.ClientId(com),aesCrypt); //ADD ID TO DICT
 
             var extIp = string.Empty;
             var extPort = 0;
@@ -182,7 +182,7 @@ namespace lazy_steam_server
             int counter = 0;
             do
             {
-                SendMessageFromString(ConnectionCodes.SendCom(ConnectionCodes.SERVER_CODE_REQUEST), socket);
+                SendMessageFromString(ConnectionCodes.SendServerCodeRequest(counter), socket);
                 var str = RecieveToString(socket);
                 var com = ConnectionCodes.RecieveCom(str);
                 var codeR = ConnectionCodes.RecieveSecurityCode(str);
