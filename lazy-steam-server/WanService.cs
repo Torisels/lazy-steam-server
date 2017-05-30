@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NATUPNPLib;
 using System.Security.Cryptography;
+using System.Windows.Forms.VisualStyles;
 
 namespace lazy_steam_server
 {
@@ -60,10 +62,8 @@ namespace lazy_steam_server
                     }
                     return false;
                 }
-                else
-                {
-                    AddPort();
-                }
+                ip = AddAndRemovePortForCheckingExternalIpAdress();
+                return true;
             }
             return false;
         }
@@ -115,6 +115,22 @@ namespace lazy_steam_server
             }
             mappings.Remove(extPort, "TCP");
             return extIP;
+        }
+
+        public static bool OpenNewPortForUpnp(out int port)
+        {
+            port = 0;
+            if (!GetFreePort(out port))
+                return false;
+
+            var upnp = UPnPNat;
+            IStaticPortMappingCollection mappings = upnp.StaticPortMappingCollection;
+            if (mappings == null)
+                return false;
+
+            mappings.Add(port, "TCP", App.TcpPort, App.GetLocalIpAddress(), true, "Lazy Steam Helper communication port");
+            return true;
+
         }
     }
    

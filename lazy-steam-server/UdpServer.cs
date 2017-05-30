@@ -23,7 +23,7 @@ namespace lazy_steam_server
                     while (true)
                     {
                         UdpReceiveResult data = await _udpServer.ReceiveAsync();
-                        if (Encoding.UTF8.GetString(data.Buffer) == ConnectionCodes.UDP_SERVER_REQUEST)
+                        if (Encoding.UTF8.GetString(data.Buffer) == ConnectionCodes.UDP_CLIENT_DISCOVERY_REQUEST)
                         {
                             App.SetText("Broadcast recieved");
                             string toSend = ConnectionCodes.UdpResponseCode();

@@ -18,12 +18,9 @@ namespace lazy_steam_server
         public static readonly string CLIENT_CONFIRM = MAIN_COM + "COMPLETE";
         public static readonly string SERVER_CONFIRM = MAIN_COM + "COMPLETE_CONFIRM";
 
-        public const string UDP_SERVER_REQUEST = "LAZY_STEAM_HELPER_DISCOVERY_REQUEST";
-        public const string UDP_SERVER_RESPONSE = "LAZY_STEAM_HELPER_DISCOVERY_RESPONSE";
-        public const string TCP_SERVER_REQUEST = "LAZY_STEAM_HELPER_CONNECTION_REQUEST";
-        public const string TCP_SERVER_RESPONSE = "LAZY_STEAM_HELPER_CONNECTION_RESPONSE";
-        public const string TCP_SERVER_REQUEST_RESPONSE = "LAZY_STEAM_HELPER_RECEIVE_RESPONSE";
-        public const string TCP_SERVER_DATA = "LAZY_STEAM_HELPER_DATA";
+        public const string UDP_CLIENT_DISCOVERY_REQUEST = "LAZY_STEAM_DISCOVERY_REQUEST";
+        public const string UDP_SERVER_DISCOVERY_RESPONSE = "LAZY_STEAM_DISCOVERY_RESPONSE";
+
 
         public const string JSON_COM = "com";
         public const string JSON_CODE = "code";
@@ -65,7 +62,7 @@ namespace lazy_steam_server
 
         public static string UdpResponseCode()
         {
-            JObject json = new JObject { [JSON_COM] = UDP_SERVER_RESPONSE, ["server_hostname"] = Dns.GetHostName(),["communication_port"] = App.TcpPort};
+            JObject json = new JObject { [JSON_COM] = UDP_SERVER_DISCOVERY_RESPONSE, ["server_hostname"] = Dns.GetHostName(),["communication_port"] = App.TcpPort};
             return JsonConverting(json);
         }
 

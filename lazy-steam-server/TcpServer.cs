@@ -107,9 +107,20 @@ namespace lazy_steam_server
             if (ConnectionCodes.ClientId(com) == string.Empty)
                 return;
             CyphersDictionary.Add(ConnectionCodes.ClientId(com),aesCrypt); //ADD ID TO DICT
-            SendMessageFromString(ConnectionCodes.SetupPortResponse(extPort, extIp), socket);
 
+            var extIp = string.Empty;
+            var extPort = 0;
 
+            if (!WanService.GetExternalIpAdress(out extIp))
+                return;
+            if (!WanService.OpenNewPortForUpnp(out extPort))
+                return;
+
+            SendMessageFromString(ConnectionCodes.SetupPortResponse(extPort, extIp), socket);//FIFTH STEP SEND EXTERNAL PORT AND IP DATA
+
+            if (ConnectionCodes.RecieveCom(RecieveToString(socket)) != ConnectionCodes.CLIENT_CONFIRM)//SIXTH STEP CONFIRMATION
+                return;
+            SendMessageFromString(ConnectionCodes.SendCom(ConnectionCodes.SERVER_CONFIRM), socket);
 
         }
 

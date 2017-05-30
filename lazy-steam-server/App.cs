@@ -28,12 +28,14 @@ namespace lazy_steam_server
 
         public App()
         {
+            string ip;
+            WanService.GetExternalIpAdress(out ip);
             InitializeComponent();
             UiChanger = this;
             SetText("Ip address is: " + GetLocalIpAddress());
             SetText("Host name is: " + Dns.GetHostName());
             SetText("Free TCP port is: " + TcpPort);
-            SetText("External IP is: "+WanService.GetExternalIpAdress());
+            SetText("External IP is: "+ ip);
             SetStartup();
             if(Properties.Settings.Default.run_at_startup)
                 ShowBallonTipOnStartUp("Lazy steam server is running.");
@@ -63,7 +65,7 @@ namespace lazy_steam_server
                 UiChanger.textBoxLog.ScrollToCaret();
             }
         }
-        private static string GetLocalIpAddress()
+        public static string GetLocalIpAddress()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (var ip in host.AddressList)
@@ -271,7 +273,7 @@ namespace lazy_steam_server
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            SetText(WanService.GetExternalIpAdress());
+           // SetText(WanService.GetExternalIpAdress());
             WanService.AddPort();
             WanService.DisplayallPorts();
             SetCodeOnForm("1144");
