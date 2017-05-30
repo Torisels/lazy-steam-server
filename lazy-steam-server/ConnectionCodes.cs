@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -69,8 +70,16 @@ namespace lazy_steam_server
 
         public static string RecieveCom(string s)
         {
-            JObject o = JObject.Parse(s);
-            return (string)o[JSON_COM];
+            try
+            {
+                JObject o = JObject.Parse(s);
+                return (string) o[JSON_COM];
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message+"\n"+ex.StackTrace);
+                return string.Empty;
+            }
         }
 
         public static string RecieveSecurityCode(string s)

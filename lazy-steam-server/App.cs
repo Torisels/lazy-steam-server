@@ -41,6 +41,7 @@ namespace lazy_steam_server
                 ShowBallonTipOnStartUp("Lazy steam server is running.");
             var tcpServer = new TcpServer(SetText1,TcpPort);
             tcpServer.Start();
+
             UdpServer.Start();
             SetText("Udp Started\nTcp Started");
 
@@ -296,9 +297,12 @@ namespace lazy_steam_server
 
         public static void SetCodeOnForm(string code)
         {
-            var form = new CodeForm { StartPosition = FormStartPosition.CenterParent };
-            form.SetLabelContent(code);
-            form.ShowDialog();
+            Task.Run(() =>
+            {
+                var form = new CodeForm {StartPosition = FormStartPosition.CenterParent};
+                form.SetLabelContent(code);
+                form.ShowDialog();
+            });
         }
         protected override void WndProc(ref Message m)
         {

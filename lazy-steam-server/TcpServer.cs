@@ -173,7 +173,7 @@ namespace lazy_steam_server
             return rnd.Next(1000,10000).ToString();
         }
 
-        private bool CheckIfCodeIsValid(Socket socket)
+        public bool CheckIfCodeIsValid(Socket socket)
         {
             var code = GenerateCode();             //generate code
             App.SetCodeOnForm(code);              //show code
@@ -187,7 +187,7 @@ namespace lazy_steam_server
                 var com = ConnectionCodes.RecieveCom(str);
                 var codeR = ConnectionCodes.RecieveSecurityCode(str);
 
-                if (com == ConnectionCodes.CLIENT_CODE_RESPONSE && codeR == code)
+                if (com == ConnectionCodes.CLIENT_CODE_RESPONSE && codeR == /*code*/"1234")//CHANGE IT!!!
                     valid = true;
                 else
                     counter++;

@@ -69,7 +69,7 @@ namespace lazy_steam_server
 
         public string HexString(byte[] bytes)
         {
-            return BitConverter.ToString(bytes);
+            return BitConverter.ToString(bytes).Replace("-",string.Empty).ToLower();
         }
     }
 }

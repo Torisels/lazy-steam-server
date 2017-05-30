@@ -11,4 +11,3 @@ C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Release\laz
 C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Release\lazy_steam_server.SettingsMenu.resources
 C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\bin\Release\Interop.NATUPNPLib.dll
 C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Release\lazy_steam_server.CodeForm.resources
-C:\Users\Gustaw\Source\Repos\lazy-steam-server\lazy-steam-server\obj\Release\lazy-steam-server.csprojResolveAssemblyReference.cache
