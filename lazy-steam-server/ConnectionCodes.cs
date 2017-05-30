@@ -29,7 +29,8 @@ namespace lazy_steam_server
         public const string JSON_ENC_KEY = "encryption_key";
         public const string JSON_EXT_PORT = "external_port";
         public const string JSON_EXT_HOST = "external_host";
-        public const string JSON_ID = "Id";
+        public const string JSON_SERVER_ID = "server_id";
+        public const string JSON_CLIENT_ID = "app_id";
 
         public enum RecievedInfo
         {
@@ -89,7 +90,7 @@ namespace lazy_steam_server
 
         public static string EncryptionKeyExchange(string code)
         {
-            JObject json = new JObject { [JSON_COM] = SERVER_KEY_EXCHANGE, [JSON_ENC_KEY] = code, [JSON_ID] = Properties.Settings.Default.unique_id};
+            JObject json = new JObject { [JSON_COM] = SERVER_KEY_EXCHANGE, [JSON_ENC_KEY] = code, [JSON_SERVER_ID] = Properties.Settings.Default.unique_id};
             return JsonConverting(json);
         }
 
@@ -99,7 +100,7 @@ namespace lazy_steam_server
             {
                 JObject o = JObject.Parse(s);
                 if (o != null)
-                    return (string)o[JSON_ID];
+                    return (string)o[JSON_CLIENT_ID];
             }
             catch (Exception)
             {
