@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Microsoft.Win32;
 
@@ -17,10 +19,10 @@ namespace lazy_steam_server
     {
         private const int BallonTipToolStartUpDuration = 5000;
         public static App UiChanger;
-        private bool _udpButtonStart;
-        private bool _tcpButtonStart;
         private bool _logsEnabled = Properties.Settings.Default.show_logs;
         public static int TcpPort = TcpServer.FreeTcpPort();
+        public static string IpAdress = GetLocalIpAddress();
+        public static string HostName = Dns.GetHostName();
 
         [DllImport("USER32.DLL")]
         public static extern bool SetForegroundWindow(IntPtr proccess);
@@ -28,30 +30,31 @@ namespace lazy_steam_server
 
         public App()
         {
-            string ip;
-            WanService.GetExternalIpAdress(out ip);
+            WanService.GetExternalIpAdress(out string ip);
+            var tsk = WanService.CheckRouterCapabilities();
+            if (ip == String.Empty)
+                ip = "not found";
             InitializeComponent();
             UiChanger = this;
-            SetText("Ip address is: " + GetLocalIpAddress());
-            SetText("Host name is: " + Dns.GetHostName());
+            SetText("Ip address is: " + IpAdress);
+            SetText("Host name is: " + HostName);
             SetText("Free TCP port is: " + TcpPort);
+            SetText("Checking router capabilities...");
             SetText("External IP is: "+ ip);
+            var success = tsk.Result;
+            SetText(success ? "Your router configuration is correct" : "Your router configuration is incorrect");
             SetStartup();
             if(Properties.Settings.Default.run_at_startup)
                 ShowBallonTipOnStartUp("Lazy steam server is running.");
             var tcpServer = new TcpServer(SetText1,TcpPort);
             tcpServer.Start();
-
             UdpServer.Start();
             SetText("Udp Started\nTcp Started");
-
             if (Properties.Settings.Default.unique_id == 0)
             {
                 Properties.Settings.Default.unique_id = GenerateRandomId();
                 Properties.Settings.Default.Save();
             }
-            Console.WriteLine(Properties.Settings.Default.unique_id);
-            Console.WriteLine(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
         }
         public static void SetText(string text)
         {
@@ -62,7 +65,7 @@ namespace lazy_steam_server
             }
             else
             {
-                UiChanger.textBoxLog.Text += text+"\n";
+                UiChanger.textBoxLog.Text += text + "\n";
                 UiChanger.textBoxLog.SelectionStart = UiChanger.textBoxLog.Text.Length;
                 UiChanger.textBoxLog.ScrollToCaret();
             }
@@ -94,25 +97,6 @@ namespace lazy_steam_server
             }
         }
 
-        private void btnUdpStart_Click(object sender, EventArgs e)
-        {
-            if (!_udpButtonStart)
-            {
-                SetText("Udp Server starting...");
-                UdpServer.Start();
-                SetText("Udp Server is running.");
-                //btnUdpStart.Text = "Stop UDP";
-                _udpButtonStart = true;
-            }
-            else
-            {
-                SetText("Udp Server service is terminating...");
-                UdpServer.Stop();
-                SetText("Udp Server service has been terminated.");
-                //btnUdpStart.Text = "Start UDP";
-                _udpButtonStart = false;
-            }
-        }
 
 //        private void btnTcpStart_Click(object sender, EventArgs e)
 //        {
@@ -275,25 +259,24 @@ namespace lazy_steam_server
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-           // SetText(WanService.GetExternalIpAdress());
-            WanService.AddPort();
-            WanService.DisplayallPorts();
-            SetCodeOnForm("1144");
-           // Console.WriteLine(WanService.GetFreePort());
-            //var asc = new AesCypher();
-            //Console.WriteLine(asc.Encrypt("ssss","sssss"));
-//            var aes = new RijndaelManaged
-//            {
-//                KeySize = 256,
-//                BlockSize = 128,
-//                Mode = CipherMode.CBC
-//            };
-//            var rfca = new Rfc2898DeriveBytes("pass",1000);
-//            aes.GenerateKey();
+            Task.Run(() =>
+            {
+
+//                if (!WanService.GetExternalIpAdress(out string extIp))
+//                {
+//                    MessageBox.Show("Error when getting external IP!");
+//                    //return;
+//                }
 //
-//            aes.IV = rfca.GetBytes(16);
-//            var l = aes.Key.Length;
-//            Console.WriteLine("r"+l);
+//                if (!WanService.OpenNewPortForUpnp(out int extPort))
+//                {
+//                    MessageBox.Show("Error when opening new port for UnPnP!");
+//                    //return;
+//                }
+//                MessageBox.Show(extIp + " port: " + extPort);
+
+                WanService.DisplayallPorts();
+            });
         }
 
         public static void SetCodeOnForm(string code)
@@ -319,11 +302,8 @@ namespace lazy_steam_server
             {
                 WindowState = FormWindowState.Normal;
             }
-            // get our current "TopMost" value (ours will always be false though)
             bool top = TopMost;
-            // make our form jump to the top of everything
             TopMost = true;
-            // set it back to whatever it was
             TopMost = top;
         }
 

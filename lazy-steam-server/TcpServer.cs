@@ -101,21 +101,31 @@ namespace lazy_steam_server
             var aesCrypt = new AesCypher();
             SendMessageFromString(ConnectionCodes.EncryptionKeyExchange(aesCrypt.AlgoKeyHexString),socket); //THIRD STEP SEND ENC CODE
 
-            com = ConnectionCodes.RecieveCom(RecieveToString(socket)); //FOURTH STEP GET CLIENT ID
+             //FOURTH STEP GET CLIENT ID
+            var recieveString = RecieveToString(socket);
+            com = ConnectionCodes.RecieveCom(recieveString);
             if (com != ConnectionCodes.CLIENT_PORT_REQUEST)
                 return;
-//            if (ConnectionCodes.ClientId(com) == string.Empty)
-//                return;
-           // CyphersDictionary.Add(ConnectionCodes.ClientId(com),aesCrypt); //ADD ID TO DICT
+
+            if (ConnectionCodes.ClientId(recieveString) == string.Empty)
+                return;
+            CyphersDictionary.Add(ConnectionCodes.ClientId(recieveString), aesCrypt); //ADD ID TO DICT
 
             var extIp = string.Empty;
             var extPort = 0;
 
             if (!WanService.GetExternalIpAdress(out extIp))
+            {
+                MessageBox.Show("Error when getting external IP!");
                 return;
-            if (!WanService.OpenNewPortForUpnp(out extPort))
-                return;
+            }
 
+            if (!WanService.OpenNewPortForUpnp(out extPort))
+            {
+                MessageBox.Show("Error when opening new port for UnPnP!");
+                return;
+            }
+              
             SendMessageFromString(ConnectionCodes.SetupPortResponse(extPort, extIp), socket);//FIFTH STEP SEND EXTERNAL PORT AND IP DATA
 
             if (ConnectionCodes.RecieveCom(RecieveToString(socket)) != ConnectionCodes.CLIENT_CONFIRM)//SIXTH STEP CONFIRMATION
@@ -175,7 +185,8 @@ namespace lazy_steam_server
 
         public bool CheckIfCodeIsValid(Socket socket)
         {
-            var code = GenerateCode();             //generate code
+            var code = "1234"; 
+                //GenerateCode();             //generate code
             App.SetCodeOnForm(code);              //show code
 
             bool valid = false;

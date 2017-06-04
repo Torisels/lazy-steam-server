@@ -65,7 +65,11 @@ namespace lazy_steam_server
 
         public static string UdpResponseCode()
         {
-            JObject json = new JObject { [JSON_COM] = UDP_SERVER_DISCOVERY_RESPONSE, ["server_hostname"] = Dns.GetHostName(),["communication_port"] = App.TcpPort};
+            JObject json = new JObject
+            {
+                [JSON_COM] = UDP_SERVER_DISCOVERY_RESPONSE, ["server_hostname"] = Dns.GetHostName(),["communication_port"] = App.TcpPort,
+                [JSON_SERVER_ID] = Properties.Settings.Default.unique_id
+            };
             return JsonConverting(json);
         }
 
@@ -100,7 +104,7 @@ namespace lazy_steam_server
 
         public static string EncryptionKeyExchange(string code)
         {
-            JObject json = new JObject { [JSON_COM] = SERVER_KEY_EXCHANGE, [JSON_ENC_KEY] = code, [JSON_SERVER_ID] = Properties.Settings.Default.unique_id};
+            JObject json = new JObject { [JSON_COM] = SERVER_KEY_EXCHANGE, [JSON_ENC_KEY] = code};
             return JsonConverting(json);
         }
 
@@ -108,7 +112,8 @@ namespace lazy_steam_server
         {
             try
             {
-                JObject o = JObject.Parse(s);
+                var o = JsonConvert.DeserializeObject<JObject>(s);
+//                var o = JObject.Parse(s);
                 if (o != null)
                     return (string)o[JSON_CLIENT_ID];
             }

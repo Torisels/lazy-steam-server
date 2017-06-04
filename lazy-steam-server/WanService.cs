@@ -60,19 +60,11 @@ namespace lazy_steam_server
                         if (ip != String.Empty)
                             return true;
                     }
-                    return false;
                 }
-                ip = AddAndRemovePortForCheckingExternalIpAdress();
-                return true;
+                var success = AddAndRemovePortForCheckingExternalIpAdress(out ip);
+                return success;
             }
             return false;
-        }
-
-        public static void AddPort()
-        {
-            var nat = UPnPNat;
-            IStaticPortMappingCollection mappings = nat.StaticPortMappingCollection;
-            mappings?.Add(199, "TCP", TcpServer.SPort, "192.168.0.51", true, "Local Web Server");
         }
 
         public static bool GetFreePort(out int port)
@@ -81,40 +73,45 @@ namespace lazy_steam_server
             var set = new HashSet<int>();
             var nat = UPnPNat;
             IStaticPortMappingCollection mappings = nat.StaticPortMappingCollection;
-            if (mappings != null)
+            if (mappings == null) return false;
+            if (mappings.Count != 0)
             {
-                if (mappings.Count != 0)
+                foreach (IStaticPortMapping map in mappings)
                 {
-                    foreach (IStaticPortMapping map in mappings)
-                    {
-                        set.Add(map.ExternalPort);
-                    }
-                    port = set.Max() + 1;
+                    set.Add(map.ExternalPort);
                 }
-                else
-                    port = 1;
-
-                return true;
+                port = FindNewPort(set);
             }
-            return false;
+            else
+                port = 1;
+
+            return true;
         }
 
-        private static string AddAndRemovePortForCheckingExternalIpAdress()
+        private static bool AddAndRemovePortForCheckingExternalIpAdress(out string ip)
         {
+
             var nat = UPnPNat;
-            var freeLocalPort = TcpServer.FreeTcpPort();
-            string extIP = string.Empty;
-            int extPort;
-            GetFreePort(out extPort);
             IStaticPortMappingCollection mappings = nat.StaticPortMappingCollection;
-            mappings?.Add(extPort, "TCP", freeLocalPort, "127.0.0.1", true, "External IP Test");
-            foreach (IStaticPortMapping map in mappings)
+            var freeLocalPort = TcpServer.FreeTcpPort();
+            ip = string.Empty;
+
+            if (!GetFreePort(out int extPort))
+                return false;
+            if (mappings != null)
             {
-                extIP = map.ExternalIPAddress;
-                break;
+                mappings.Add(extPort, "TCP", freeLocalPort, App.GetLocalIpAddress(), true, "External IP Test");
+                foreach (IStaticPortMapping map in mappings)
+                {
+                    ip = map.ExternalIPAddress;
+                    if (ip != String.Empty)
+                    {
+                        mappings.Remove(extPort, "TCP");
+                        return true;
+                    }
+                }
             }
-            mappings.Remove(extPort, "TCP");
-            return extIP;
+            return false;
         }
 
         public static bool OpenNewPortForUpnp(out int port)
@@ -132,6 +129,56 @@ namespace lazy_steam_server
             return true;
 
         }
-    }
+
+        public static int FindNewPort(HashSet<int> ports)
+        {
+            int port;
+            var rnd = new Random();
+            do
+            {
+                port = rnd.Next(1, 60000);
+            } while (ports.Contains(port));
+            return port;
+        }
+
+        public static Task<bool> CheckRouterCapabilities()
+        {
+            return Task.Run(() =>
+            {
+                var nat = new UPnPNATClass();
+                IStaticPortMappingCollection ports = nat.StaticPortMappingCollection;
+                return ports != null;
+            });
+        }
+
+        public static Task<Dictionary<int,string>> GetExternalIpAndPortForTcpConnectionTask()
+        {
+            return Task.Run(() =>
+            {
+                int port = -1;
+                string extIp = string.Empty;
+                var nat = new UPnPNATClass();
+                IStaticPortMappingCollection portsCollection = nat.StaticPortMappingCollection;
+                if (portsCollection == null) return new Dictionary<int, string> {{port, extIp}};
+                if (portsCollection.Count == 0)
+                {
+
+                }
+                else
+                {
+                    foreach (IStaticPortMapping portMapping in portsCollection)
+                    {
+                        var iphelper = portMapping.ExternalIPAddress;
+                        if (iphelper != string.Empty)
+                        {
+                            //iphelper;
+                            break;
+                        }
+                    }
+                }
+                return new Dictionary<int, string> { { port, extIp } };
+            });
+        }
+}
    
 }
